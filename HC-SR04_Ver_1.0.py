@@ -13,7 +13,7 @@ def send_notification(percent_left):
     print(percent_left)
     percents_to_send_at = [50, 30, 15, 10, 5, 3, 2]
     if percent_left in percents_to_send_at:
-        #
+        # send an [ email, text, notification, etc. ]
 
 
 
