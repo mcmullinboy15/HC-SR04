@@ -1,0 +1,6 @@
+Data about your Water Softener:
+Percent of Container Left: 50%
+It is {4}ft tall and {1.25} ft in diameter
+Your Water Softener can hold a max of {3} bags,You need {1.33} bag(s) to fill your water softenerfrom where it is now.
+
+Attached is a copy of your data if you would like to download it
