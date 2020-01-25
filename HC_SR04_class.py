@@ -22,7 +22,7 @@ class HC_SR04:
         percent_left = self.roundup(percent_left)
         print(percent_left)
 
-        if date.datetime.today() != self.today:  # >
+        if date.datetime.today() > self.today:  # !=
             self.today = date.datetime.today()
         else:
             return False
