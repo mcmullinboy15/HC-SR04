@@ -1,10 +1,6 @@
 import math
-
 import RPi.GPIO as GPIO
 import time
-
-import gpio as gpio
-
 GPIO.setmode(GPIO.BCM)
 
 import email_testing as email
