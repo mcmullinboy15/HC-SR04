@@ -6,68 +6,84 @@ from email.mime.base import MIMEBase
 from email import encoders
 import os.path
 
-import pandas as pd
+# import pandas as pd
 
 email = 'ezsalt.dev.env@gmail.com'
 password = 'easysalt98'
 subject = ''
 message = ''
 
+file_location = 'C:\\Users\\amcmullin\\Desktop\\attach.csv'
 
-def send_email(percent, send_to_emails):  # List of email addresses
+
+def send_email(percent, send_to_emails=None):  # List of email addresses
+
+    if send_to_emails is None:
+        send_to_emails = ['mcmullinboy15@gmail.com', 'michaeljensen6453@gmail.com']
 
     subject = f'Test_01: Your Water Softener is {percent}% filled'
     message = f'Data about your Water Softener:\n'
-    df = pd.DataFrame(['Percent', percent], ['height', 4], ['diameter', 1.25], ['max_capacity', 3],
-                      ['bags_to_fill', 1.33])
-    print(df)
-    # f'Percent of Container Left: {percent}%\n' \
-    # 'It is {4}ft tall and {1.25} ft in diameter\n' \
-    # 'Your Water Softener can hold a max of {3} bags,' \
-    # 'You need {1.33} bag(s) to fill your water softener' \
-    # 'from where it is now.\n\n' \
-    # '' \
-    # 'Attached is a copy of your data if you would like to download it'
+    data = f'Percent, {percent}, \n, ' \
+           f'height, {4}, \n,' \
+           f'diameter, {1.25}, \n,' \
+           f'max_capacity, {3},\n' \
+           f'bags_to_fill, {1.33}, \n'
+    print(data)
+    writetofile(file_location, message)
+    part = create_attachment(file_location)
+    server = connect()
+    sendto(send_to_emails, server, part)
 
 
-file_location = 'C:\\Users\\amcmullin\\Desktop\\attach.txt'
+def writetofile(file_location, message):
+    # TODO  I add this to make the file
+    attaching = open(file_location, 'w')
+    attaching.write(message)
+    attaching.close()
 
-# TODO  I add this to make the file
-attaching = open(file_location, 'w')
-attaching.write(message)
-attaching.close()
 
-# Create the attachment file (only do it once)
-filename = os.path.basename(file_location)
-attachment = open(file_location, "rb")
-part = MIMEBase('application', 'octet-stream')
-part.set_payload(attachment.read())
-encoders.encode_base64(part)
-part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+def create_attachment(file_location):
+    # Create the attachment file (only do it once)
+    filename = os.path.basename(file_location)
+    attachment = open(file_location, "rb")
+    part = MIMEBase('application', 'octet-stream')
+    part.set_payload(attachment.read())
+    encoders.encode_base64(part)
+    part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+    return part
 
-# Connect and login to the email server
-server = smtplib.SMTP('smtp.gmail.com', 587)
-server.starttls()
-server.login(email, password)
 
-# Loop over each email to send to
-for send_to_email in send_to_emails:
-    # Setup MIMEMultipart for each email address (if we don't do this, the emails will concat on each email sent)
-    msg = MIMEMultipart()
-    msg['From'] = email
-    msg['To'] = send_to_email
-    msg['Subject'] = subject
+def connect():
+    # Connect and login to the email server
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(email, password)
+    return server
 
-    # Attach the message to the MIMEMultipart object
-    msg.attach(MIMEText(message, 'plain'))
-    # Attach the attachment file
-    msg.attach(part)
 
-    # Send the email to this specific email address
-    server.sendmail(email, send_to_email, msg.as_string())
+def sendto(send_to_emails, server, part):
+    # Loop over each email to send to
+    for send_to_email in send_to_emails:
+        # Setup MIMEMultipart for each email address (if we don't do this, the emails will concat on each email sent)
+        msg = MIMEMultipart()
+        msg['From'] = email
+        msg['To'] = send_to_email
+        msg['Subject'] = subject
 
-# Quit the email server when everything is done
-server.quit()
+        # Attach the message to the MIMEMultipart object
+        msg.attach(MIMEText(message, 'plain'))
+        # Attach the attachment file
+        msg.attach(part)
+
+        # Send the email to this specific email address
+        server.sendmail(email, send_to_email, msg.as_string())
+    return server
+
+
+def done(server):
+    # Quit the email server when everything is done
+    server.quit()
+
 
 """ Received from: [ https://nitratine.net/blog/post/how-to-send-an-email-with-python/ ] """
 

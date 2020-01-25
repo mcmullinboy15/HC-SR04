@@ -1,30 +1,18 @@
 import math
 import RPi.GPIO as GPIO
 import time
+import datetime as date
+
+from HC_SR04_class import HC_SR04
+
 GPIO.setmode(GPIO.BCM)
 
 import email_testing as email
 
-size_of_container = 121.9  # cm is 4ft
-
-TRIG = 23
-ECHO = 24
-
-
-def roundup(x):
-    return int(math.ceil(x / 10.0)) * 10
-
-
-#         send an [ email, text, notification, etc. ]
-#         Look up how to send the email.  Could use GSuite.
-def send_notification(percent_left):
-    percent_left = roundup(percent_left)
-    print(percent_left)
-    percents_to_send_at = [50, 30, 15, 10, 5, 3, 2]
-    if percent_left in percents_to_send_at:
-        return True
-    else:
-        return False
+hc_sr04 = HC_SR04()
+TRIG = hc_sr04.TRIG
+ECHO = hc_sr04.ECHO
+size_of_container = hc_sr04.size_of_container
 
 
 '''Main'''
@@ -57,7 +45,7 @@ try:
         percent_left = ((distance_away / size_of_container) * 100)
         percent_left = round(percent_left, 2)
 
-        if send_notification(percent_left):
+        if hc_sr04.send_notification(percent_left):
             email.send_email(percent_left)
 
         print(f"Percent Remaining: {percent_left}%")
