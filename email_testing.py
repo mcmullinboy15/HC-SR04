@@ -18,20 +18,20 @@ file_location = 'C:\\Users\\amcmullin\\Desktop\\attach.csv'
 def send_email(percent, send_to_emails=None):  # List of email addresses
 
     if send_to_emails is None:
-        send_to_emails = ['mcmullinboy15@gmail.com']#, 'michaeljensen6453@gmail.com']
+        send_to_emails = ['mcmullinboy15@gmail.com'] # , 'michaeljensen6453@gmail.com']
 
-    subject = f'Test_01: Your Water Softener is {percent}% filled'
+    subject = f'Test_04: Your Water Softener is {percent}% filled'
     header = f'Data about your Water Softener:\n'
-    data = f'Percent, {percent}, \n, ' \
-           f'height, {4}, \n,' \
-           f'diameter, {1.25}, \n,' \
-           f'max_capacity, {3},\n' \
-           f'bags_to_fill, {1.33}, \n'
+    data = f'Percent, {percent}\n' \
+           f'height, {4}\n' \
+           f'diameter, {1.25}\n' \
+           f'max_capacity, {3}\n' \
+           f'bags_to_fill, {1.33}\n'
     print(data)
     writetofile(file_location, header, data)
     part = create_attachment(file_location)
     server = connect()
-    send(send_to_emails, subject=subject,  first_line=header, message=data, server=server, part=part)
+#    send(send_to_emails, subject=subject,  first_line=header, message=data, server=server, part=part)
 
 
 def writetofile(file_location, header, data):

@@ -9,8 +9,9 @@ class HC_SR04:
         self.TRIG = TRIG
         self.ECHO = ECHO
 
-        '2020-01-24 14:00:00.000000'
-        self.today = today  # date.datetime.today() - date.timedelta(hours=24)
+        'now: 2020-01-24 14:00:00.000000'
+        'today: 2020-01-24'
+        self.today = date.datetime.today() - date.timedelta(hours=24)
         print(self.today)
 
     def roundup(self, x):
@@ -22,7 +23,7 @@ class HC_SR04:
         percent_left = self.roundup(percent_left)
         print(percent_left)
 
-        if date.datetime.today() > self.today:  # !=
+        if date.datetime.today() !=  self.today:  # !=
             self.today = date.datetime.today()
         else:
             return False
