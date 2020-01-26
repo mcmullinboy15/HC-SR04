@@ -12,7 +12,7 @@ email = 'ezsalt.dev.env@gmail.com'
 password = 'easysalt98'
 
 
-file_location = 'C:\\Users\\amcmullin\\Desktop\\attach.csv'
+file_location = 'attach.csv'
 
 
 def send_email(percent, send_to_emails=None):  # List of email addresses
@@ -40,7 +40,6 @@ def writetofile(file_location, header, data):
     attaching.write(header)
     attaching.write(data)
     attaching.close()
-
 
 def create_attachment(file_location):
     # Create the attachment file (only do it once)

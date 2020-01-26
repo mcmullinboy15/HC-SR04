@@ -1,19 +1,20 @@
+import os
 
 ''' Imports '''
 
-import math
-import RPi.GPIO as GPIO
-import time
 
-import email_testing as email
+def import_necessary_libraries():
+    'This is the impost for the Sensor'
+    'import RPi.GPIO as GPIO'
+    os.system('pip install RPi.GPIO')
 
+    'This might not be needed but connects to gmail server'
+    'import smtplib'
+    os.system('pip install smtplib')
 
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from email.mime.base import MIMEBase
-from email import encoders
-import os.path
+    "I Hope this works, I don't use it yet but might in the future"
+    'import pandas as pd'
+    os.system('sudo apt-get install python-pandas')
 
-import pandas as pd
-'sudo apt-get install python-pandas'
+if __name__ == '__main__':
+    import_necessary_libraries()
