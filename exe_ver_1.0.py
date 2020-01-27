@@ -7,18 +7,13 @@ import email_testing as email
 
 
 def GPIO_setup():
-    # import RPi.GPIO as GPIO
     GPIO.setmode(GPIO.BCM)
 
     hc_sr04 = HC_SR04()
-    TRIG = hc_sr04.TRIG
-    ECHO = hc_sr04.ECHO
-    size_of_container = hc_sr04.size_of_container
 
-    '''Main'''
     print("Distance Measurement in Progress")
-    GPIO.setup(TRIG, GPIO.OUT)
-    GPIO.setup(ECHO, GPIO.IN)
+    GPIO.setup(hc_sr04.TRIG, GPIO.OUT)
+    GPIO.setup(hc_sr04.ECHO, GPIO.IN)
 
     return hc_sr04
 
@@ -46,8 +41,8 @@ def main():
             time.sleep(0.0001)
             GPIO.output(hc_sr04.TRIG, False)
 
-            pulse_start = 0
-            pulse_end = 0
+            pulse_start, pulse_end = 0
+            print(pulse_start,pulse_end)
             while GPIO.input(hc_sr04.ECHO) == 0:
                 pulse_start = time.time()
 
@@ -68,6 +63,5 @@ def main():
 
 
 if __name__ == '__main__':
-    print('1')
     setup.import_necessary_libraries()
     main()
