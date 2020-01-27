@@ -6,34 +6,31 @@ import csv
 setup_file = 'setup_variables.csv'
 
 
-
 def setup_complete(change_value=False):
-    file = None
-    var = False
+    this = 1
+
     if change_value:
-        read = open(setup_file, 'r')
-        content = csv.DictReader(read)
-        print('dic:',content)
-        content_list = list(content)
-        print('list:',content_list)
-        
+        read = open(setup_file, 'r+')
+        text = read.read()
+        text = text.replace(str(-1), str(1))
+
         file = open(setup_file, 'w')
-        file.write(str(content_list))
+        file.write(text)
         file.close()
+
         read.close()
     else:
         file = open(setup_file, 'r')
         reader = csv.DictReader(file)
         for line in reader:
-            if line['setup_complete']:
-                var = line['setup_complete']
-        print(var)
-    file.close()
-    return var
+            this = int(line['setup_complete'])
+        file.close()
+    return this < 0
+
 
 def import_necessary_libraries():
-
     run = setup_complete()
+    # print('1', run)
 
     if run:
         'This is the impost for the Sensor'
@@ -47,8 +44,9 @@ def import_necessary_libraries():
         "I Hope this works, I don't use it yet but might in the future"
         'import pandas as pd'
         os.system('sudo apt-get install python-pandas')
-        
-        setup_complete(change_value=True)
+
+        print('2', setup_complete(change_value=True))
+
 
 if __name__ == '__main__':
     import_necessary_libraries()
