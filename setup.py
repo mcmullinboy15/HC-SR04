@@ -48,6 +48,8 @@ def import_necessary_libraries():
 
         print('2', setup_complete(change_value=True))
 
+def setup():
+    import_necessary_libraries()
 
 if __name__ == '__main__':
-    import_necessary_libraries()
+    setup()
