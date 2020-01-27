@@ -11,18 +11,21 @@ import os.path
 email = 'ezsalt.dev.env@gmail.com'
 password = 'easysalt98'
 
-# Eventually I want to store all errors but not neccessary. I think I just need to remember that I am using the same file everytime there is an email sent out
+# Eventually I want to store all errors but not neccessary.
+# I think I just need to remember that I am using the same file everytime there is an email sent out
 csv_location = 'attach.csv'
-txt_location= 'attach.txt'
+txt_location = 'attach.txt'
+
 
 def send_exception_error(error, attach_file=True, send_emails_to=None):
-
     subject = error
-    header = 'There has been an Interuption and/or Error that has Occured Please Contact EZ_Salt Support at 801-897-3786\n\n'
-    data = error # backTrace, etc.
+    header = 'There has been an Interuption and/or Error that has Occured' \
+             '\nPlease Contact EZ_Salt Support at 801-897-3786\n\n'
+    data = error  # backTrace, etc.
     send_email(subject, header, data, False, attach_file, send_emails_to)
 
-def send_report(percent, send_emails_to=None):  # List of email addresses
+
+def send_report(percent, attach_file=True, send_emails_to=None):  # List of email addresses
 
     subject = f'Test_04: Your Water Softener is {percent}% filled'
     header = f'Data about your Water Softener:\n'
@@ -33,10 +36,12 @@ def send_report(percent, send_emails_to=None):  # List of email addresses
            f'bags_to_fill, {1.33}\n'
     send_email(subject, header, data, True, attach_file, send_emails_to)
 
+
 def send_email(subject, header, data, is_report=False, attach_file=True, send_emails_to=None):
+    part = None
 
     if send_emails_to is None:
-        send_emails_to = ['mcmullinboy15@gmail.com'] # , 'michaelje$
+        send_emails_to = ['mcmullinboy15@gmail.com']  # , 'michaelje$
 
     file_location = txt_location
     if is_report:
@@ -46,7 +51,7 @@ def send_email(subject, header, data, is_report=False, attach_file=True, send_em
         writetofile(file_location, header, data)
         part = create_attachment(file_location)
     server = connect()
-    send(send_emails_to, subject=subject,  first_line=header, message=data, server=server, part=part)
+    send(send_emails_to, subject=subject, first_line=header, message=data, server=server, part=part)
 
 
 def writetofile(file_location, header, data):
@@ -55,6 +60,7 @@ def writetofile(file_location, header, data):
     attaching.write(header)
     attaching.write(data)
     attaching.close()
+
 
 # This file wants to be opened in html reader when it is a .txt ... Fix that Andrew
 def create_attachment(file_location):
@@ -86,7 +92,7 @@ def send(send_to_emails, subject, first_line, message, server, part):
         msg['Subject'] = subject
 
         # Attach the message to the MIMEMultipart object
-        msg.attach(MIMEText(first_line+'\n'+message, 'plain'))
+        msg.attach(MIMEText(first_line + '\n' + message, 'plain'))
         # Attach the attachment file
         msg.attach(part)
 

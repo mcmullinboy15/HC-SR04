@@ -3,7 +3,7 @@ import time
 import RPi.GPIO as GPIO
 
 from HC_SR04_class import HC_SR04
-import email_testing as email
+import email__ as email
 
 
 def GPIO_setup():
@@ -11,11 +11,12 @@ def GPIO_setup():
 
     hc_sr04 = HC_SR04()
 
-    print(f'\n\033[47m\n'
-          f'\033[31m============================================\033[0m\n\n'
-          f'\033[31m           Running exe_ver_1.0.py           \033[0m\n'
-          f'\033[31m         Any Thoughts on the Color?         \033[0m\n\n'
-          f'\033[31m============================================\033[0m\033[0m\n\n')
+    print('\n\n'
+          f'\033[31m\033[43m============================================\033[0m\n'
+          f'\033[31m\033[43m           Running exe_ver_1.0.py           \033[0m\n'
+          f'\033[31m\033[43m         Any Thoughts on the Color?         \033[0m\n'
+          f'\033[31m\033[43m============================================\033[0m\n'
+          f'\n')
 
     print("Distance Measurement in Progress\n")
     GPIO.setup(hc_sr04.TRIG, GPIO.OUT)
@@ -35,7 +36,7 @@ def find_distance_and_percent(hc_sr04, pulse_end, pulse_start):
 
 
 def main():
-    global message
+    message = None
 
     try:
         hc_sr04 = GPIO_setup()
@@ -76,6 +77,8 @@ def main():
     finally:
         print("\nCleaning up!")
         GPIO.cleanup()
+        if message == None:
+            message = 'UnKnown Error'
 
         email.send_exception_error(message)
         # I want to pass the `e` in there like in Java so the email contains the Info
