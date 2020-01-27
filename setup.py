@@ -39,7 +39,8 @@ def import_necessary_libraries():
 
         'This might not be needed but connects to gmail server'
         'import smtplib'
-        os.system('pip install smtplib')
+# I'm still not sure if this is unneccessary or if it is just not working right now for some other reason. I don't remember installing it though :)
+#        os.system('pip install smtplib')
 
         "I Hope this works, I don't use it yet but might in the future"
         'import pandas as pd'

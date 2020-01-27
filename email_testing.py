@@ -11,14 +11,18 @@ import os.path
 email = 'ezsalt.dev.env@gmail.com'
 password = 'easysalt98'
 
+# Eventually I want to store all errors but not neccessary. I think I just need to remember that I am using the same file everytime there is an email sent out
+csv_location = 'attach.csv'
+txt_location= 'attach.txt'
 
-file_location = 'attach.csv'
+def send_exception_error(error, attach_file=True, send_emails_to=None):
 
+    subject = error
+    header = 'There has been an Interuption and/or Error that has Occured Please Contact EZ_Salt Support at 801-897-3786\n\n'
+    data = error # backTrace, etc.
+    send_email(subject, header, data, False, attach_file, send_emails_to)
 
-def send_email(percent, send_to_emails=None):  # List of email addresses
-
-    if send_to_emails is None:
-        send_to_emails = ['mcmullinboy15@gmail.com'] # , 'michaeljensen6453@gmail.com']
+def send_report(percent, send_emails_to=None):  # List of email addresses
 
     subject = f'Test_04: Your Water Softener is {percent}% filled'
     header = f'Data about your Water Softener:\n'
@@ -27,20 +31,32 @@ def send_email(percent, send_to_emails=None):  # List of email addresses
            f'diameter, {1.25}\n' \
            f'max_capacity, {3}\n' \
            f'bags_to_fill, {1.33}\n'
+    send_email(subject, header, data, True, attach_file, send_emails_to)
+
+def send_email(subject, header, data, is_report=False, attach_file=True, send_emails_to=None):
+
+    if send_emails_to is None:
+        send_emails_to = ['mcmullinboy15@gmail.com'] # , 'michaelje$
+
+    file_location = txt_location
+    if is_report:
+        file_location = csv_location
     print(data)
-    writetofile(file_location, header, data)
-    part = create_attachment(file_location)
+    if attach_file:
+        writetofile(file_location, header, data)
+        part = create_attachment(file_location)
     server = connect()
-#    send(send_to_emails, subject=subject,  first_line=header, message=data, server=server, part=part)
+    send(send_emails_to, subject=subject,  first_line=header, message=data, server=server, part=part)
 
 
 def writetofile(file_location, header, data):
-    # TODO  I add this to make the file
+    # TODO  I added this to make the file
     attaching = open(file_location, 'w')
     attaching.write(header)
     attaching.write(data)
     attaching.close()
 
+# This file wants to be opened in html reader when it is a .txt ... Fix that Andrew
 def create_attachment(file_location):
     # Create the attachment file (only do it once)
     filename = os.path.basename(file_location)
