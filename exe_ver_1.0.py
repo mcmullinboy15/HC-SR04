@@ -1,5 +1,6 @@
 import setup
 import time
+import sys, traceback
 import RPi.GPIO as GPIO
 
 from HC_SR04_class import HC_SR04
@@ -27,11 +28,14 @@ def GPIO_setup():
 
 def find_distance_and_percent(hc_sr04, pulse_end, pulse_start):
     pulse_duration = pulse_end - pulse_start
+
     distance = pulse_duration * 17150
     distance = round(distance, 2)
     distance_away = hc_sr04.size_of_container - distance
+
     percent_left = ((distance_away / hc_sr04.size_of_container) * 100)
     percent_left = round(percent_left, 2)
+
     return distance, percent_left
 
 
@@ -43,15 +47,14 @@ def main():
         while True:
 
             GPIO.output(hc_sr04.TRIG, False)
-            print("Waiting For Sensor To Settle")
-            time.sleep(1)  # 2)
+            print("Waiting For Sensor To Settle\n")
+            time.sleep(2)
 
             GPIO.output(hc_sr04.TRIG, True)
             time.sleep(0.0001)
             GPIO.output(hc_sr04.TRIG, False)
 
             pulse_start, pulse_end = 0, 0
-            print('pulse', pulse_start, pulse_end)
             while GPIO.input(hc_sr04.ECHO) == 0:
                 pulse_start = time.time()
 
@@ -61,14 +64,12 @@ def main():
             distance, percent_left = find_distance_and_percent(hc_sr04, pulse_end, pulse_start)
 
             if hc_sr04.send_notification(percent_left):
-                email.send_report(percent_left)
+                email.send_report(percent_lef)
 
             print(f"Percent Remaining: {percent_left}%")
-            print("Distance: " + str(distance) + " cm")
+            print(f"Distance: {distance} cm")
 
     except KeyboardInterrupt:  # If there is a KeyboardInterrupt (when you press ctrl+c), exit the program
-        print("\nCleaning up!")
-        GPIO.cleanup()
         message = 'KeyboardInterrupt'  # message = e.traceBack() etc.
 
     except FileNotFoundError:
@@ -80,9 +81,10 @@ def main():
         if message == None:
             message = 'UnKnown Error'
 
-        email.send_exception_error(message)
+        trace_back = traceback # .print_exc(file=sys.stdout)
+        email.send_exception_error(message, str(trace_back))
         # I want to pass the `e` in there like in Java so the email contains the Info
-
+        sys.exit()
 
 if __name__ == '__main__':
     setup.setup()

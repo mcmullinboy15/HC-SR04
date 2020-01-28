@@ -9,7 +9,7 @@ import os.path
 # import pandas as pd
 
 email = 'ezsalt.dev.env@gmail.com'
-password = 'easysalt98'
+password = 'ezsalt98'
 
 # Eventually I want to store all errors but not neccessary.
 # I think I just need to remember that I am using the same file everytime there is an email sent out
@@ -17,11 +17,11 @@ csv_location = 'attach.csv'
 txt_location = 'attach.txt'
 
 
-def send_exception_error(error, attach_file=True, send_emails_to=None):
+def send_exception_error(error, traceback, attach_file=True, send_emails_to=None):
     subject = error
     header = 'There has been an Interuption and/or Error that has Occured' \
              '\nPlease Contact EZ_Salt Support at 801-897-3786\n\n'
-    data = error  # backTrace, etc.
+    data = traceback  # backTrace, etc.
     send_email(subject, header, data, False, attach_file, send_emails_to)
 
 
