@@ -64,7 +64,7 @@ def main():
             distance, percent_left = find_distance_and_percent(hc_sr04, pulse_end, pulse_start)
 
             if hc_sr04.send_notification(percent_left):
-                email.send_report(percent_lef)
+                email.send_report(percent_left)
 
             print(f"Percent Remaining: {percent_left}%")
             print(f"Distance: {distance} cm")
