@@ -29,10 +29,8 @@ def setup_complete(change_value=False):
 
 
 def import_necessary_libraries():
-    run = setup_complete()
-    # print('1', run)
 
-    if run:
+    if setup_complete():
         'This is the impost for the Sensor'
         'import RPi.GPIO as GPIO'
         os.system('pip install RPi.GPIO')
