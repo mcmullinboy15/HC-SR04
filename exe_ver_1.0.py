@@ -1,14 +1,14 @@
 import setup
 import time
 import sys, traceback
-# import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 from HC_SR04_class import HC_SR04
 import email__ as email
 
 
 def GPIO_setup():
-    # GPIO.setmode(GPIO.BCM)
+    GPIO.setmode(GPIO.BCM)
 
     hc_sr04 = HC_SR04()
 
@@ -20,8 +20,8 @@ def GPIO_setup():
           f'\n')
 
     print("Distance Measurement in Progress\n")
-    # GPIO.setup(hc_sr04.TRIG, GPIO.OUT)
-    # GPIO.setup(hc_sr04.ECHO, GPIO.IN)
+    GPIO.setup(hc_sr04.TRIG, GPIO.OUT)
+    GPIO.setup(hc_sr04.ECHO, GPIO.IN)
 
     return hc_sr04
 
@@ -81,10 +81,11 @@ def main():
         if message == None:
             message = 'UnKnown Error'
 
-        trace_back = traceback # .print_exc(file=sys.stdout)
+        trace_back = traceback  # .print_exc(file=sys.stdout)
         email.send_exception_error(message, str(trace_back))
         # I want to pass the `e` in there like in Java so the email contains the Info
         sys.exit()
+
 
 if __name__ == '__main__':
     setup.setup()
