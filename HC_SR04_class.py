@@ -15,14 +15,12 @@ class HC_SR04:
         self.today = date.datetime.today() - date.timedelta(hours=32)
         self.today = self.today.date()
 
-
     def roundup(self, percent_left):
-#        return int(math.ceil(percent_left / 10.0)) * 10
-         return int(round(percent_left))
+        #        return int(math.ceil(percent_left / 10.0)) * 10
+        return int(round(percent_left))
 
-
-#        send an [ email, text, notification banner, etc. ] 
-#        Look into using GSuite.
+    #        send an [ email, text, notification banner, etc. ]
+    #        Look into using GSuite.
     def send_notification(self, percent_left):
         percent_left = self.roundup(percent_left)
         print(percent_left)
