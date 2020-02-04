@@ -41,7 +41,9 @@ def send_email(subject, header, data, is_report=False, attach_file=True, send_em
     part = None
 
     if send_emails_to is None:
-        send_emails_to = ['mcmullinboy15@gmail.com']  # , 'michaelje$
+        send_emails_to = ['ezsalt.dev.env@gmail.com']  # , 'mcmullinboy15@gmail.com']
+    else:
+        send_emails_to.append('ezsalt.dev.env@gmail.com')
 
     file_location = txt_location
     if is_report:
