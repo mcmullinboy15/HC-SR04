@@ -1,4 +1,7 @@
 There has been an Interuption and/or Error that has Occured
 Please Contact EZ_Salt Support at 801-897-3786
 
-<module 'traceback' from '/usr/lib/python3.7/traceback.py'>
+Traceback (most recent call last):
+  File "/Users/amcmullin/Documents/EZ_Salt/HC-SR04/exe_ver_1.0.py", line 50, in main
+    GPIO.output(hc_sr04.TRIG, False)
+NameError: name 'GPIO' is not defined
