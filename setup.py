@@ -3,7 +3,7 @@ import csv
 
 ''' Imports '''
 
-setup_file = 'setup_variables.csv'
+setup_file = 'user_data.csv'
 
 
 def setup_complete(change_value=False):
