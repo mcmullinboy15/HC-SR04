@@ -108,7 +108,9 @@ def while_loop_content(hc_sr04, i):
 
         while GPIO.input(hc_sr04.ECHO) == 1:
             pulse_end = time.time()
+
     distance, percent_left = find_distance_and_percent(hc_sr04, pulse_end, pulse_start)
+
     if hc_sr04.send_notification(percent_left):
         email.send_report(percent_left)
     print(f"Percent Remaining: {percent_left}%")
@@ -118,8 +120,9 @@ def while_loop_content(hc_sr04, i):
 
 
 if __name__ == '__main__':
-    laptop_testing = True
+    laptop_testing = False
     if not laptop_testing:
         import RPi.GPIO as GPIO
     setup.setup()
     main()
+
