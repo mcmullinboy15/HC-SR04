@@ -79,10 +79,12 @@ def main():
         if message is None:
             message = 'UnKnown Error'
 
-        trace_back = traceback.format_exception(*sys.exc_info())  # .print_exc(file=sys.stdout)
-        formated_exe = ""
-        for i in trace_back:
-            formated_exe = f"{formated_exe}{i}"
+#        trace_back = traceback.format_exception(*sys.exc_info()) 
+        formated_exe = traceback.print_exc(file=sys.stdout)
+
+        #formated_exe = ""
+        #for i in trace_back:
+        #    formated_exe += f"{formated_exe}{i}"
         email.send_exception_error(message, formated_exe)
 
         sys.exit()
@@ -118,7 +120,7 @@ def while_loop_content(hc_sr04, i):
 
 
 if __name__ == '__main__':
-    laptop_testing = True
+    laptop_testing = False
     if not laptop_testing:
         import RPi.GPIO as GPIO
     setup.setup()

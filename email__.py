@@ -43,6 +43,7 @@ def send_email(subject, header, data, is_report=False, attach_file=True, send_em
     if send_emails_to is None:
         send_emails_to = ['ezsalt.dev.env@gmail.com']  # , 'mcmullinboy15@gmail.com']
     else:
+        send_emails_to = list(send_emails_to)
         send_emails_to.append('ezsalt.dev.env@gmail.com')
 
     file_location = txt_location
@@ -53,14 +54,14 @@ def send_email(subject, header, data, is_report=False, attach_file=True, send_em
         writetofile(file_location, header, data)
         part = create_attachment(file_location)
     server = connect()
-    send(send_emails_to, subject=subject, first_line=header, message=data, server=server, part=part)
+    send(send_emails_to, subject=str(subject), first_line=str(header), message=str(data), server=server, part=part)
 
 
 def writetofile(file_location, header, data):
     # TODO  I added this to make the file
     attaching = open(file_location, 'w')
-    attaching.write(header)
-    attaching.write(data)
+    attaching.write(str(header))
+    attaching.write(str(data))
     attaching.close()
 
 
