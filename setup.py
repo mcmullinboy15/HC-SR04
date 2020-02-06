@@ -31,6 +31,10 @@ def setup_complete(change_value=False):
 def import_necessary_libraries():
 
     if setup_complete():
+        'setting up the look of the bash shell'
+#        os.system('chsh -s /bin/bash')
+#        os.system("export PS1='\[\033[32m\]\[\033[m\]@\[\033[32m\] \[\033[33;1m\]\w\[\033[m\] (\$(git branch 2>/dev/null | grep '^*' | colrm 1 2)) $ '")
+
         'This is the impost for the Sensor'
         'import RPi.GPIO as GPIO'
         os.system('pip install RPi.GPIO')
