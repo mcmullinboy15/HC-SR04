@@ -16,7 +16,7 @@ class HC_SR04:
         self.today = self.today.date()
 
     def roundup(self, percent_left):
-        #        return int(math.ceil(percent_left / 10.0)) * 10
+    #        return int(math.ceil(percent_left / 10.0)) * 10
         return int(round(percent_left))
 
     #        send an [ email, text, notification banner, etc. ]
@@ -29,7 +29,7 @@ class HC_SR04:
         today_temp = today_temp.date()
         if today_temp > self.today:
 
-            percents_to_send_at = [50, 30, 15, 10, 5, 3, 2]
+            percents_to_send_at = [50, 30, 15]
             if percent_left in percents_to_send_at:
                 self.today = today_temp
                 return True

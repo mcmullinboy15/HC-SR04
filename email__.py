@@ -31,7 +31,6 @@ def send_report(percent, attach_file=True, send_emails_to=None):  # List of emai
     header = f'Data about your Water Softener:\n'
     data = f'Percent, {percent}\n' \
            f'height, {4}\n' \
-           f'diameter, {1.25}\n' \
            f'max_capacity, {3}\n' \
            f'bags_to_fill, {1.33}\n'
     send_email(subject, header, data, True, attach_file, send_emails_to)

@@ -41,7 +41,7 @@ def import_necessary_libraries():
 #        os.system('pip install smtplib')
 
         "I Hope this works, I don't use it yet but might in the future"
-        'import pandas as pd'
+#         'import pandas as pd'
         os.system('sudo apt-get install python-pandas')
 
         print('2', setup_complete(change_value=True))
