@@ -123,5 +123,4 @@ if __name__ == '__main__':
     laptop_testing = False
     if not laptop_testing:
         import RPi.GPIO as GPIO
-    setup.setup()
     main()
