@@ -1,5 +1,9 @@
 #!/bin/sh
 
+echo "updating raspberry pi"
+#sudo apt update
+#sudo apt full-upgrade
+
 echo "creating path to repo"
 mkdir -p ~/Documents/EZ_Salt
 cd ~/Documents/EZ_Salt

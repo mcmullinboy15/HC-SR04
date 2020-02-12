@@ -33,5 +33,6 @@ def setup():
         os.system("source script_setup.sh ")
         setup_complete(change_value=True)
 
+
 if __name__ == '__main__':
     setup()
