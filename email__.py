@@ -5,11 +5,14 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 import os.path
+import csv
 
 # import pandas as pd
 
 email = 'ezsalt.dev.env@gmail.com'
 password = 'ezsalt98'
+
+USER_DATA_fn = 'user_data.csv'
 
 # Eventually I want to store all errors but not neccessary.
 # I think I just need to remember that I am using the same file everytime there is an email sent out
@@ -27,18 +30,31 @@ def send_exception_error(error, traceback, attach_file=True, send_emails_to=None
 
 def send_report(percent, attach_file=True, send_emails_to=None):  # List of email addresses
 
-    subject = f'Test_04: Your Water Softener is {percent}% filled'
+    subject = f'Your Water Softener is {percent}% filled'
     header = f'Data about your Water Softener:\n'
     data = f'Percent, {percent}\n' \
            f'height, {4}\n' \
-           f'diameter, {1.25}\n' \
            f'max_capacity, {3}\n' \
-           f'bags_to_fill, {1.33}\n'
+           f'bags_to_fill, {1.33}\n' \
+           f''
     send_email(subject, header, data, True, attach_file, send_emails_to)
 
 
 def send_email(subject, header, data, is_report=False, attach_file=True, send_emails_to=None):
     part = None
+    make_list = list()
+
+    file = open(USER_DATA_fn)
+    csv_data = csv.DictReader(file)
+
+    for row in csv_data:
+        email = str(row['email'])
+        emails = email.split(',')
+        for email in emails:
+            if email != '':
+                make_list.append(email)
+                send_emails_to = make_list
+    file.close()
 
     if send_emails_to is None:
         send_emails_to = ['ezsalt.dev.env@gmail.com']  # , 'mcmullinboy15@gmail.com']
@@ -46,10 +62,11 @@ def send_email(subject, header, data, is_report=False, attach_file=True, send_em
         send_emails_to = list(send_emails_to)
         send_emails_to.append('ezsalt.dev.env@gmail.com')
 
+    print(send_emails_to)
     file_location = txt_location
     if is_report:
         file_location = csv_location
-    print(data)
+
     if attach_file:
         writetofile(file_location, header, data)
         part = create_attachment(file_location)
@@ -59,6 +76,10 @@ def send_email(subject, header, data, is_report=False, attach_file=True, send_em
 
 def writetofile(file_location, header, data):
     # TODO  I added this to make the file
+    print('attaching: \n'
+          f'{header}'
+          f'{data}'
+          f'')
     attaching = open(file_location, 'w')
     attaching.write(str(header))
     attaching.write(str(data))

@@ -30,9 +30,12 @@ def setup_complete(change_value=False):
 
 def setup():
     if setup_complete():
-        os.system("source script_setup.sh ")
+        # os.system("source script_setup.sh ")
         setup_complete(change_value=True)
 
 
 if __name__ == '__main__':
+    print("asdfasdfasdfasf\nasdfasdf\n\n\n\n\\asdfasfdasdfasfdsan\s    "
+          "uhygftudryexdcfghjvbklnuhigytfr6d5esrxdfhcgjvbjygutfudryesxdfcgjhvb\n\n\n\n\nkmjhygutfudrufygh")
+
     setup()
