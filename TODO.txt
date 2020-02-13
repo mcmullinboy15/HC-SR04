@@ -1,0 +1,2 @@
+Test the wifi  adding on the pi
+

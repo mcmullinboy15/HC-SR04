@@ -1,16 +1,14 @@
+import os
 import sys
 import time
 import traceback
 
 import email__ as email
-import setup
 from HC_SR04_class import HC_SR04
 
 fake_start = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-fake_end = [0.999, 0.998, 0.997, 0.99645, 0.995, 0.99395, 0.99355, 0.9934, 0.9933, 0.9932]
-
-
 #             86%    72%    58%      50%    30%      15%       9%      7%      6%      4%
+fake_end = [0.999, 0.998, 0.997, 0.99645, 0.995, 0.99395, 0.99355, 0.9934, 0.9933, 0.9932]
 
 
 def GPIO_setup():
@@ -18,14 +16,6 @@ def GPIO_setup():
 
     hc_sr04 = HC_SR04()
 
-    print('\n\n'
-          f'\033[31m\033[43m============================================\033[0m\n'
-          f'\033[31m\033[43m           Running exe_ver_1.0.py           \033[0m\n'
-          f'\033[31m\033[43m         Any Thoughts on the Color?         \033[0m\n'
-          f'\033[31m\033[43m============================================\033[0m\n'
-          f'\n')
-
-    print("Distance Measurement in Progress\n")
     GPIO.setup(hc_sr04.TRIG, GPIO.OUT)
     GPIO.setup(hc_sr04.ECHO, GPIO.IN)
 
@@ -47,6 +37,15 @@ def find_distance_and_percent(hc_sr04, pulse_end, pulse_start):
 
 def main():
     message = None
+
+    print('\n\n'
+          f'\033[31m\033[43m============================================\033[0m\n'
+          f'\033[31m\033[43m           Running exe_ver_1.0.py           \033[0m\n'
+          f'\033[31m\033[43m         Any Thoughts on the Color?         \033[0m\n'
+          f'\033[31m\033[43m============================================\033[0m\n'
+          f'\n')
+
+    print("Distance Measurement in Progress\n")
 
     try:
         if laptop_testing:
@@ -70,6 +69,11 @@ def main():
 
     except NameError:
         message = 'NameError'
+
+    else:
+        email.send_exception_error("The else method has been called???\n"
+                                   "I don't know what happened, I wonder if the "
+                                   "raspberry pi died", "ELSE Problem")
 
     #    I want to pass the `e` in there like in Java so the email contains the Info
     finally:
@@ -121,8 +125,11 @@ def while_loop_content(hc_sr04, i):
 
 if __name__ == '__main__':
     laptop_testing = False
+
+    print(os.uname()[1])
+    if str(os.uname()[1]).__contains__('amcmullin'):
+        laptop_testing = True
     if not laptop_testing:
         import RPi.GPIO as GPIO
-    setup.setup()
     main()
 
