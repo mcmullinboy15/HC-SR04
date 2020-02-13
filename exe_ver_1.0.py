@@ -37,6 +37,7 @@ def find_distance_and_percent(hc_sr04, pulse_end, pulse_start):
 
 def main():
     message = None
+    error = None
 
     print('\n\n'
           f'\033[31m\033[43m============================================\033[0m\n'
@@ -61,19 +62,22 @@ def main():
             while True:
                 hc_sr04, i = while_loop_content(hc_sr04, i)
 
-    except KeyboardInterrupt:  # If there is a KeyboardInterrupt (when you press ctrl+c), exit the program
+    except KeyboardInterrupt as ki:  # If there is a KeyboardInterrupt (when you press ctrl+c), exit the program
+        error = ki
         message = 'KeyboardInterrupt'  # message = e.traceBack() etc.
 
-    except FileNotFoundError:
+    except FileNotFoundError as fnf:
+        error = fnf
         message = 'FileNotFoundError'
 
-    except NameError:
+    except NameError as ne:
+        error = ne
         message = 'NameError'
 
-    else:
-        email.send_exception_error("The else method has been called???\n"
-                                   "I don't know what happened, I wonder if the "
-                                   "raspberry pi died", "ELSE Problem")
+    # else:
+    #     email.send_exception_error("The else method has been called???\n"
+    #                                "I don't know what happened, I wonder if the "
+    #                                "raspberry pi died", "ELSE Problem")
 
     #    I want to pass the `e` in there like in Java so the email contains the Info
     finally:
@@ -83,11 +87,15 @@ def main():
         if message is None:
             message = 'UnKnown Error'
 
-        trace_back = traceback.format_exception(*sys.exc_info())  # .print_exc(file=sys.stdout)
-        formated_exe = ""
-        for i in trace_back:
-            formated_exe = f"{formated_exe}{i}"
-        email.send_exception_error(message, formated_exe)
+        # raise
+        # trace_back = traceback.format_exception(*sys.exc_info())
+        # trace_back = traceback.print_exc(file=sys.stdout)
+        # trace_back = sys
+        # formated_exe = trace_back
+        # print(trace_back)
+        # for i in trace_back:
+        #     formated_exe = f"{formated_exe}{i}"
+        email.send_exception_error(error=message, traceback=error)
 
         sys.exit()
 
@@ -132,4 +140,3 @@ if __name__ == '__main__':
     if not laptop_testing:
         import RPi.GPIO as GPIO
     main()
-

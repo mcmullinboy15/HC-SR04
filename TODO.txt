@@ -1,2 +1,17 @@
 Test the wifi  adding on the pi
 
+Test [git pull]ing while running
+ * I might just not need to edit the run file while
+   run-pulling but only manually pulling. Maybe I
+   could have an update file that runs when I do
+   the git pull and it does a git pull and other
+   git pull stuff so I could edit the run.sh file.
+
+Make sure that the name is linked with the email:
+ * Mr. McMullin, Mrs. McMullin
+ * mcmullinboy15@gmail.com, mcmullinand@gmail.com
+
+Work on Exception Handling
+ * except KeyboardInterrupt as ki
+        error =  ki
+        message = ki.ERROR ??? # 'KeyboardInterrupt'

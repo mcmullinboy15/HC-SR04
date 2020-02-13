@@ -2,7 +2,7 @@
 
 if [ $(source setup_complete.sh) = 'true' ]
 then
-  echo "Setup has Already  been run so  we will not do that now"
+  echo "Setup has Already been run so we will not do that now"
 else
   python3 wifi_setup.py
 
