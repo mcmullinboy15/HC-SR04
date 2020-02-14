@@ -1,3 +1,4 @@
+#YOLO
 echo "Running script_setup.sh"
 source script_setup.sh
 

@@ -15,3 +15,10 @@ Work on Exception Handling
  * except KeyboardInterrupt as ki
         error =  ki
         message = ki.ERROR ??? # 'KeyboardInterrupt'
+
+Make a process for Jacob and try to make the process
+simple and as easy  as possible. I want it to be
+ * cd Documants
+ * git clone ...
+
+ That means that i'll need to change the .sh files where I do a cd /Documents/EZ_Salt/HC-SR04
