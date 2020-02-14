@@ -7,6 +7,10 @@ Test [git pull]ing while running
    the git pull and it does a git pull and other
    git pull stuff so I could edit the run.sh file.
 
+ * I have determined I need to use crontab or maybe
+   I need to have run.sh run once a day and then
+   have exe_ver_1.0.py run for one day and stop.
+
 Make sure that the name is linked with the email:
  * Mr. McMullin, Mrs. McMullin
  * mcmullinboy15@gmail.com, mcmullinand@gmail.com

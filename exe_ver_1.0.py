@@ -3,8 +3,6 @@ import sys
 import time
 import traceback
 
-#YOLO
-
 import email__ as email
 from HC_SR04_class import HC_SR04
 
@@ -103,7 +101,6 @@ def main():
 
 
 def while_loop_content(hc_sr04, i):
-    os.system('git pull')
     pulse_start, pulse_end = 0, 0
     if laptop_testing:
         pulse_end = fake_start[i]
@@ -129,7 +126,7 @@ def while_loop_content(hc_sr04, i):
     if hc_sr04.send_notification(percent_left):
         email.send_report(percent_left)
     print(f"Percent Remaining: {percent_left}%")
-    print(f"De: {distance} cm")
+    print(f"Distance: {distance} cm")
     i += 1
     return hc_sr04, i
 
