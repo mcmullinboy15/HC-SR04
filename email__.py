@@ -19,41 +19,64 @@ USER_DATA_fn = 'user_data.csv'
 csv_location = 'attach.csv'
 txt_location = 'attach.txt'
 
-
+"""
+carriers = [
+        'att': '@mms.att.net',
+        'tmoblie': 'tmomail.net',
+        'verizon': '@vtext.com',
+        'sprint': '@page.nextel.com'
+]
+"""
 def send_exception_error(error, traceback, attach_file=True, send_emails_to=None):
     subject = error
     header = 'There has been an Interuption and/or Error that has Occured' \
              '\nPlease Contact EZ_Salt Support at 801-897-3786\n\n'
-    data = traceback  # backTrace, etc.
-    send_email(subject, header, data, False, attach_file, send_emails_to)
+    message = traceback  # backTrace, etc.
+    data = message
+    send_email(subject, header, message, data, False, attach_file, send_emails_to)
 
 
 def send_report(percent, attach_file=True, send_emails_to=None):  # List of email addresses
 
     subject = f'Your Water Softener is {percent}% filled'
-    header = f'Data about your Water Softener:\n'
-    data = f'Percent, {percent}\n' \
+    header = f'Hi [Name to be added here],\n'
+    message= f'This is an email to let you know that you water '\
+           f'softener salt is almost out of salt!\n\n'\
+           f'You currently have {round(percent)}% salt remaining '\
+           f'in your tank.' \
+           f'\n\nClick here to schedule a salt delivery.\n' \
+           f'https://square.site/book/RF2BTQNX9JXWK/ezsalt' \
+           f''
+
+    data = f'percent, {percent}\n' \
            f'height, {4}\n' \
            f'max_capacity, {3}\n' \
            f'bags_to_fill, {1.33}\n' \
            f''
-    send_email(subject, header, data, True, attach_file, send_emails_to)
+    send_email(subject, header, message, data, True, attach_file, send_emails_to)
 
 
-def send_email(subject, header, data, is_report=False, attach_file=True, send_emails_to=None):
+def send_email(subject, header, message, data, is_report=False, attach_file=True, send_emails_to=None):
     part = None
-    make_list = list()
+    email_list = list()
+    name_list = list()
 
     file = open(USER_DATA_fn)
     csv_data = csv.DictReader(file)
 
     for row in csv_data:
+        name = str(row['name'])
+        names = name.split(',')
+        for name in names:
+            if name != '':
+                name_list.append(name)
+
         email = str(row['email'])
         emails = email.split(',')
         for email in emails:
             if email != '':
-                make_list.append(email)
-                send_emails_to = make_list
+                email_list.append(email)
+                send_emails_to = email_list
     file.close()
 
     if send_emails_to is None:
@@ -62,6 +85,7 @@ def send_email(subject, header, data, is_report=False, attach_file=True, send_em
         send_emails_to = list(send_emails_to)
         send_emails_to.append('ezsalt.dev.env@gmail.com')
 
+    print(name_list)
     print(send_emails_to)
     file_location = txt_location
     if is_report:
@@ -71,7 +95,7 @@ def send_email(subject, header, data, is_report=False, attach_file=True, send_em
         writetofile(file_location, header, data)
         part = create_attachment(file_location)
     server = connect()
-    send(send_emails_to, subject=str(subject), first_line=str(header), message=str(data), server=server, part=part)
+    send(send_emails_to, subject=str(subject), first_line=str(header), message=str(message+'YOLO\n\n'), server=server, part=part)
 
 
 def writetofile(file_location, header, data):
@@ -108,7 +132,7 @@ def connect():
 
 def send(send_to_emails, subject, first_line, message, server, part):
     # Loop over each email to send to
-    for send_to_email in send_to_emails:
+    for send_to_email in send_to_emails:  # Lets to this :: for sent_to_email, name in list_of_people:
         # Setup MIMEMultipart for each email address (if we don't do this, the emails will concat on each email sent)
         msg = MIMEMultipart()
         msg['From'] = email
@@ -118,7 +142,7 @@ def send(send_to_emails, subject, first_line, message, server, part):
         # Attach the message to the MIMEMultipart object
         msg.attach(MIMEText(first_line + '\n' + message, 'plain'))
         # Attach the attachment file
-        msg.attach(part)
+     #   msg.attach(part)
 
         # Send the email to this specific email address
         server.sendmail(email, send_to_email, msg.as_string())
