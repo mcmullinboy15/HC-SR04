@@ -129,7 +129,7 @@ def while_loop_content(hc_sr04, i):
     if hc_sr04.send_notification(percent_left):
         email.send_report(percent_left)
     print(f"Percent Remaining: {percent_left}%")
-    print(f"Distance: {distance} cm")
+    print(f"De: {distance} cm")
     i += 1
     return hc_sr04, i
 
