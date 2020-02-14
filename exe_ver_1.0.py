@@ -36,8 +36,8 @@ def find_distance_and_percent(hc_sr04, pulse_end, pulse_start):
 
 
 def main():
-    message = None
-    error = None
+    message = 'The message was not initialized'
+    error = 'The Traceback was not initialized'
 
     print('\n\n'
           f'\033[31m\033[43m============================================\033[0m\n'
@@ -101,6 +101,7 @@ def main():
 
 
 def while_loop_content(hc_sr04, i):
+    os.system('git pull')
     pulse_start, pulse_end = 0, 0
     if laptop_testing:
         pulse_end = fake_start[i]
