@@ -82,10 +82,13 @@ def main():
     #    I want to pass the `e` in there like in Java so the email contains the Info
     finally:
         print("\nCleaning up!")
-        if not laptop_testing:  GPIO.cleanup()
+        if not laptop_testing:
+            GPIO.cleanup()
 
-        if message is None:
+        if message is 'The message was not initialized':
             message = 'UnKnown Error'
+        if error is 'The error was not initialized':
+            error = "Exception Unknown"
 
         # raise
         # trace_back = traceback.format_exception(*sys.exc_info())

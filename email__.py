@@ -27,6 +27,8 @@ carriers = [
         'sprint': '@page.nextel.com'
 ]
 """
+
+
 def send_exception_error(error, traceback, attach_file=True, send_emails_to=None):
     subject = error
     header = 'There has been an Interuption and/or Error that has Occured' \
@@ -38,15 +40,15 @@ def send_exception_error(error, traceback, attach_file=True, send_emails_to=None
 
 def send_report(percent, attach_file=True, send_emails_to=None):  # List of email addresses
 
-    subject = f'Your Water Softener is {percent}% filled'
+    subject = f'Your Water Softener needs filling'
     header = f'Hi [Name to be added here],\n'
-    message= f'This is an email to let you know that you water '\
-           f'softener salt is almost out of salt!\n\n'\
-           f'You currently have {round(percent)}% salt remaining '\
-           f'in your tank.' \
-           f'\n\nClick here to schedule a salt delivery.\n' \
-           f'https://square.site/book/RF2BTQNX9JXWK/ezsalt' \
-           f''
+    message = f'This is an message to let you know that you water ' \
+              f'softener salt is almost out of salt!\n\n' \
+              f'You currently have {round(percent)}% salt remaining ' \
+              f'in your tank.' \
+              f'\n\nClick here to schedule a salt delivery.\n ' \
+              # f'https://square.site/book/RF2BTQNX9JXWK/ezsalt' \
+              # f'\nThank You and have a Great day!!'
 
     data = f'percent, {percent}\n' \
            f'height, {4}\n' \
@@ -71,11 +73,11 @@ def send_email(subject, header, message, data, is_report=False, attach_file=True
             if name != '':
                 name_list.append(name)
 
-        email = str(row['email'])
-        emails = email.split(',')
-        for email in emails:
+        email_temp = str(row['email'])
+        emails = email_temp.split(',')
+        for _email_ in emails:
             if email != '':
-                email_list.append(email)
+                email_list.append(_email_)
                 send_emails_to = email_list
     file.close()
 
@@ -94,8 +96,10 @@ def send_email(subject, header, message, data, is_report=False, attach_file=True
     if attach_file:
         writetofile(file_location, header, data)
         part = create_attachment(file_location)
+
     server = connect()
-    send(send_emails_to, subject=str(subject), first_line=str(header), message=str(message+'YOLO\n\n'), server=server, part=part)
+    send(send_emails_to, subject=str(subject), first_line=str(header), message=str(message), server=server,
+         part=part)
 
 
 def writetofile(file_location, header, data):
@@ -105,7 +109,7 @@ def writetofile(file_location, header, data):
           f'{data}'
           f'')
     attaching = open(file_location, 'w')
-    attaching.write(str(header))
+    # attaching.write(str(header))
     attaching.write(str(data))
     attaching.close()
 
@@ -135,14 +139,19 @@ def send(send_to_emails, subject, first_line, message, server, part):
     for send_to_email in send_to_emails:  # Lets to this :: for sent_to_email, name in list_of_people:
         # Setup MIMEMultipart for each email address (if we don't do this, the emails will concat on each email sent)
         msg = MIMEMultipart()
+        print(send_to_email)
+
         msg['From'] = email
         msg['To'] = send_to_email
         msg['Subject'] = subject
 
+        print(subject)
+        print(first_line + message)
         # Attach the message to the MIMEMultipart object
-        msg.attach(MIMEText(first_line + '\n' + message, 'plain'))
+        msg.attach(MIMEText(first_line + message, 'plain'))
         # Attach the attachment file
-     #   msg.attach(part)
+        # TODO attach if it is an email not a text
+        msg.attach(part)
 
         # Send the email to this specific email address
         server.sendmail(email, send_to_email, msg.as_string())

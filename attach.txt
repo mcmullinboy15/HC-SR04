@@ -1,3 +1,1 @@
-There has been an Interuption and/or Error that has Occured
-Please Contact EZ_Salt Support at 801-897-3786
-
+The Traceback was not initialized
