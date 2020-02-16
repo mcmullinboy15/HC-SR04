@@ -12,7 +12,6 @@ class HC_SR04:
         self.user_data = csv.DictReader(file)
         for row in self.user_data:
             self.TIME_OF_DAY = float(row['time_of_day'])
-            print('time_of_day =', self.TIME_OF_DAY)
 
             self.size_of_container = float(row['size_of_container'])  # 121.9cm is 4ft
             self.send_daily = row['send_daily']
@@ -39,7 +38,6 @@ class HC_SR04:
     #        Look into using GSuite.
     def send_notification(self, percent_left):
         percent_left = self.roundup(percent_left)
-        print(percent_left)
 
         # These are to be implemented
         # self.send_daily

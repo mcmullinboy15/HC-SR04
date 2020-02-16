@@ -76,6 +76,7 @@ class Email():
         file = open(self.USER_DATA_fn)
         csv_data = csv.DictReader(file)
 
+        # also append 'EZ_SALT'
         for row in csv_data:
             name = str(row['name'])
             names = name.split(',')
@@ -99,7 +100,7 @@ class Email():
             self.writetofile(file_location)
             self.create_attachment(file_location)
 
-        send(self.subject, self.header, self.message, self.email, self.name_list, self.send_emails_to, self.part, self.server)
+        self.send()
 
     def writetofile(self, file_location):
         attaching = open(file_location, 'w')
@@ -126,35 +127,36 @@ class Email():
         return self.server
 
 
-def send(subject, header, message, email, name_list, send_emails_to, part, server):
-    """ Loop over each email to send to """
+    def send(self):
+        """ Loop over each email to send to """
 
-    print(name_list)
-    print(send_emails_to)
-    for send_to_email in send_emails_to:  # Lets to this :: for sent_to_email, name in list_of_people:
+        print(self.name_list)
+        print(self.send_emails_to)
+        for send_to_email in self.send_emails_to:  # Lets to this :: for sent_to_email, name in list_of_people:
 
-        print(send_to_email)
-        print(subject)
-        print(header + '\n' + message)
+            print(send_to_email)
+            print(self.subject)
+            print(self.header + '\n' + self.message)
 
-        # Setup MIMEMultipart for each email address (if we don't do this, the emails will concat on each email sent)
-        msg = MIMEMultipart()
+            # Setup MIMEMultipart for each email address (if we don't do this, the emails will concat on each email sent)
+            msg = MIMEMultipart()
 
-        msg['From'] = str(email)
-        msg['To'] = str(send_to_email)
-        msg['Subject'] = str(subject)
+            msg['From'] = str(self.email)
+            msg['To'] = str(send_to_email)
+            msg['Subject'] = str(self.subject)
 
-        # Attach the message to the MIMEMultipart object
-        msg.attach(MIMEText(header + '\n' + message, 'plain'))
+            # Attach the message to the MIMEMultipart object
+            msg.attach(MIMEText(self.header + '\n' + self.message, 'plain'))
 
-        # Attach the attachment file
-        # TODO attach if it is an email not a text
-        msg.attach(part)
+            # Attach the attachment file
+            # TODO attach if it is an email not a text
+            if self.part is not None:
+                msg.attach(self.part)
 
-        # Send the email to this specific email address
-        server.sendmail(str(email), str(send_to_email), msg.as_string())
+            # Send the email to this specific email address
+            self.server.sendmail(str(self.email), str(send_to_email), msg.as_string())
 
 
-def done(server):
-    """ Quit the email server when everything is done """
-    server.quit()
+    def done(self):
+        """ Quit the email server when everything is done """
+        self.server.quit()

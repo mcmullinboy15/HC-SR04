@@ -2,6 +2,7 @@ import os
 import sys
 import time
 import traceback
+import logging
 
 from email__ import Email
 from HC_SR04_class import HC_SR04
@@ -10,7 +11,6 @@ fake_start = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 #             86%    72%    58%      50%    30%      15%       9%      7%      6%      4%
 fake_end = [0.999, 0.998, 0.997, 0.99645, 0.995, 0.99395, 0.99355, 0.9934, 0.9933, 0.9932]
 
-email = None
 
 def GPIO_setup():
     GPIO.setmode(GPIO.BCM)
@@ -37,8 +37,8 @@ def find_distance_and_percent(hc_sr04, pulse_end, pulse_start):
 
 
 def main():
-    message = 'The message was not initialized'
     error = 'The Traceback was not initialized'
+    message = 'The message was not initialized'
 
     color1 = '\033[31m'
     color2 = '\033[43m'
@@ -58,7 +58,6 @@ def main():
             hc_sr04 = HC_SR04()
         else:
             hc_sr04 = GPIO_setup()
-        email = Email()
 
         i = 0
         if laptop_testing:
@@ -68,16 +67,17 @@ def main():
             while True:
                 hc_sr04, i = while_loop_content(hc_sr04, i)
 
-    except KeyboardInterrupt as ki:  # If there is a KeyboardInterrupt (when you press ctrl+c), exit the program
-        error = ki
+    except KeyboardInterrupt as e:  # If there is a KeyboardInterrupt (when you press ctrl+c), exit the program
+        # error = e #e.with_traceback(*sys.exc_traceback)#.with_traceback()
         message = 'KeyboardInterrupt'  # message = e.traceBack() etc.
+        error = logging.error(message)
 
-    except FileNotFoundError as fnf:
-        error = fnf
+    except FileNotFoundError as e:
+        error = e
         message = 'FileNotFoundError'
 
-    except NameError as ne:
-        error = ne
+    except NameError as e:
+        error = e
         message = 'NameError'
 
     # else:
@@ -91,10 +91,13 @@ def main():
         if not laptop_testing:
             GPIO.cleanup()
 
-        if message is 'The message was not initialized':
-            message = 'UnKnown Error'
+        print('error',error)
+
         if error is 'The error was not initialized':
             error = "Exception Unknown"
+        if message is 'The message was not initialized':
+            message = 'UnKnown Error'
+
 
         # raise
         # trace_back = traceback.format_exception(*sys.exc_info())
@@ -110,7 +113,9 @@ def main():
 
 
 def while_loop_content(hc_sr04, i):
+
     pulse_start, pulse_end = 0, 0
+    time.sleep(2)
     if laptop_testing:
         pulse_end = fake_start[i]
         pulse_start = fake_end[i]
@@ -118,7 +123,6 @@ def while_loop_content(hc_sr04, i):
     else:
         GPIO.output(hc_sr04.TRIG, False)
         print("Waiting For Sensor To Settle\n")
-        time.sleep(2)
 
         GPIO.output(hc_sr04.TRIG, True)
         time.sleep(0.0001)
@@ -134,11 +138,11 @@ def while_loop_content(hc_sr04, i):
 
     if do_anything(distance, percent_left):
         """ Deciding if I should send a notification  """
-        print(percent_left)
         if hc_sr04.send_notification(percent_left):
             email.send_report(percent_left)
         print(f"Percent Remaining: {percent_left}%")
         print(f"Distance: {distance} cm")
+        print()
 
     i += 1
     return hc_sr04, i
@@ -147,12 +151,13 @@ def while_loop_content(hc_sr04, i):
 def do_anything(distance, percent_left):
     if percent_left < 0:
         return False
-    if percent_left < 100:
+    if percent_left > 100:
         return False
-
+    return True
 
 if __name__ == '__main__':
     laptop_testing = False
+    email = Email()
 
     print(os.uname()[1])
     if not str(os.uname()[1]).__contains__('pi@raspberry'):
