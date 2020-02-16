@@ -44,7 +44,8 @@ def main():
     color2 = '\033[43m'
     end_color = '\033[0m\n'
 
-    print('\n\n'
+    print(f'\n\nasdf'
+          f'asdf'
           f'{color1}{color2}============================================{end_color}'
           f'{color1}{color2}           Running exe_ver_1.0.py           {end_color}'
           f'{color1}{color2}         Any Thoughts on the Color?         {end_color}'

@@ -21,16 +21,16 @@ else
     mkdir -p ~/Documents/EZ_Salt
     cd ~/Documents/EZ_Salt/ || return
 
-
-    echo "assigning username and password"
-    git config --global user.name "ezsaltdevenv"
-    git config --global user.password "ezsalt98"
-
     echo "cloning the git repo from ezsaltdevenv/HC-SR04.git"
-    git clone https://github.com/ezsaltdevenv/HC-SR04.git
+    git clone https://ezsaltdevenv:ezsalt98@github.com/ezsaltdevenv/HC-SR04.git
 
     echo "entering git repo"
     cd ~Documents/EZ_Salt/HC-SR04/ || return
+
+#    echo "assigning username and password"
+#    git config --global user.name "ezsaltdevenv"
+#    git config --global user.password "ezsalt98"
+
   fi
 
   echo
