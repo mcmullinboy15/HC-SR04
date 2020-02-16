@@ -3,13 +3,14 @@ import sys
 import time
 import traceback
 
-import email__ as email
+from email__ import Email
 from HC_SR04_class import HC_SR04
 
 fake_start = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 #             86%    72%    58%      50%    30%      15%       9%      7%      6%      4%
 fake_end = [0.999, 0.998, 0.997, 0.99645, 0.995, 0.99395, 0.99355, 0.9934, 0.9933, 0.9932]
 
+email = None
 
 def GPIO_setup():
     GPIO.setmode(GPIO.BCM)
@@ -39,11 +40,15 @@ def main():
     message = 'The message was not initialized'
     error = 'The Traceback was not initialized'
 
+    color1 = '\033[31m'
+    color2 = '\033[43m'
+    end_color = '\033[0m\n'
+
     print('\n\n'
-          f'\033[31m\033[43m============================================\033[0m\n'
-          f'\033[31m\033[43m           Running exe_ver_1.0.py           \033[0m\n'
-          f'\033[31m\033[43m         Any Thoughts on the Color?         \033[0m\n'
-          f'\033[31m\033[43m============================================\033[0m\n'
+          f'{color1}{color2}============================================{end_color}'
+          f'{color1}{color2}           Running exe_ver_1.0.py           {end_color}'
+          f'{color1}{color2}         Any Thoughts on the Color?         {end_color}'
+          f'{color1}{color2}============================================{end_color}'
           f'\n')
 
     print("Distance Measurement in Progress\n")
@@ -53,6 +58,7 @@ def main():
             hc_sr04 = HC_SR04()
         else:
             hc_sr04 = GPIO_setup()
+        email = Email()
 
         i = 0
         if laptop_testing:
@@ -128,6 +134,7 @@ def while_loop_content(hc_sr04, i):
 
     if do_anything(distance, percent_left):
         """ Deciding if I should send a notification  """
+        print(percent_left)
         if hc_sr04.send_notification(percent_left):
             email.send_report(percent_left)
         print(f"Percent Remaining: {percent_left}%")
@@ -148,7 +155,7 @@ if __name__ == '__main__':
     laptop_testing = False
 
     print(os.uname()[1])
-    if str(os.uname()[1]).__contains__('amcmullin'):
+    if not str(os.uname()[1]).__contains__('pi@raspberry'):
         laptop_testing = True
     if not laptop_testing:
         import RPi.GPIO as GPIO
