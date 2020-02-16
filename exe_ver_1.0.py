@@ -126,12 +126,22 @@ def while_loop_content(hc_sr04, i):
 
     distance, percent_left = find_distance_and_percent(hc_sr04, pulse_end, pulse_start)
 
-    if hc_sr04.send_notification(percent_left):
-        email.send_report(percent_left)
-    print(f"Percent Remaining: {percent_left}%")
-    print(f"Distance: {distance} cm")
+    if do_anything(distance, percent_left):
+        """ Deciding if I should send a notification  """
+        if hc_sr04.send_notification(percent_left):
+            email.send_report(percent_left)
+        print(f"Percent Remaining: {percent_left}%")
+        print(f"Distance: {distance} cm")
+
     i += 1
     return hc_sr04, i
+
+
+def do_anything(distance, percent_left):
+    if percent_left < 0:
+        return False
+    if percent_left < 100:
+        return False
 
 
 if __name__ == '__main__':

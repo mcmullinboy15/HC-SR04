@@ -12,6 +12,7 @@ import csv
 email = 'ezsalt.dev.env@gmail.com'
 password = 'ezsalt98'
 
+attach_file = False
 USER_DATA_fn = 'user_data.csv'
 
 # Eventually I want to store all errors but not neccessary.
@@ -104,10 +105,6 @@ def send_email(subject, header, message, data, is_report=False, attach_file=True
 
 def writetofile(file_location, header, data):
     # TODO  I added this to make the file
-    print('attaching: \n'
-          f'{header}'
-          f'{data}'
-          f'')
     attaching = open(file_location, 'w')
     # attaching.write(str(header))
     attaching.write(str(data))
