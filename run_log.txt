@@ -1,0 +1,4 @@
+ it's Sat 15 Feb 2020 06:19:01 PM MST and I just ran /home/pi/Documents/EZ_Salt/HC-SR04/run.sh
+ it's Sat 15 Feb 2020 06:20:01 PM MST and I just ran /home/pi/Documents/EZ_Salt/HC-SR04/run.sh
+ it's Sat 15 Feb 2020 06:21:01 PM MST and I just ran /home/pi/Documents/EZ_Salt/HC-SR04/run.sh
+ it's Sat 15 Feb 2020 06:22:01 PM MST and I just ran /home/pi/Documents/EZ_Salt/HC-SR04/run.sh
