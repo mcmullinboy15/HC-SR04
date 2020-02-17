@@ -4,11 +4,6 @@ if [ $(source setup_complete.sh) = 'true' ]
 then
   echo "Setup has Already been run so we will not do that now"
 else
-  python3 wifi_setup.py
-
-  echo "updating raspberry pi"
-  #sudo apt update
-  #sudo apt full-upgrade
 
   path="../../../Documents/EZ_Salt/HC-SR04"
   if [ -d "$path" ]
@@ -26,12 +21,19 @@ else
 
     echo "entering git repo"
     cd ~Documents/EZ_Salt/HC-SR04/ || return
-
-#    echo "assigning username and password"
-#    git config --global user.name "ezsaltdevenv"
-#    git config --global user.password "ezsalt98"
-
   fi
+
+  echo "setting up wifi"
+  sudo rfkill unblock 0
+  sudo ifconfig wlan0 up
+  python3 wifi_setup.py
+  wpa_cli -i wlan0 reconfigure
+
+  echo "updating raspberry pi"
+  sudo apt update
+  sudo apt full-upgrade
+  sudo apt-get update
+  sudo apt-get upgrade
 
   echo
   echo "changing terminal design temporarily"
@@ -49,7 +51,6 @@ else
   #sudo apt-get install python-pandas
 
   echo "when finished I'll change the -1 to 1"
-  #python3 setup.py
   source setup_complete.sh
 fi
 echo

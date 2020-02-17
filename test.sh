@@ -16,3 +16,102 @@ do
     printf "\b${sp:i++%${#sp}:1}"
     sleep 1
 done
+
+
+country=US network={ ssid=oldfarm scan_ssid=1 psk=OldFarmpa$$ }
+Directory ../../../Documents/EZ_Salt/HC-SR04 exists.
+country=US network={ ssid=oldfarm scan_ssid=1 psk=OldFarmpa$$ }
+Directory ../../../Documents/EZ_Salt/HC-SR04 exists.
+country=US network={ ssid=oldfarm scan_ssid=1 psk=OldFarmpa$$ }
+Directory ../../../Documents/EZ_Salt/HC-SR04 exists.
+country=US network={ ssid=oldfarm scan_ssid=1 psk=OldFarmpa$$ }
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
+country=US network={ ssid=oldfarm scan_ssid=1 psk=OldFarmpa$$ }
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
+country=US network={ ssid=oldfarm scan_ssid=1 psk=OldFarmpa$$ }
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
+country=US network={ ssid=oldfarm scan_ssid=1 psk=OldFarmpa$$ }
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
+country=US network={ ssid=oldfarm scan_ssid=1 psk=OldFarmpa$$ }
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
+country=US network={ ssid=oldfarm scan_ssid=1 psk=OldFarmpa$$ }
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
+country=US network={ ssid=%s scan_ssid=1 psk=%s } oldfarm OldFarmpa$$
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
+
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
+
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
+
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
+
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
+country=US network={ ssid=oldfarm scan_ssid=1 psk=OldFarmpa$$ }
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
+country=US network={ ssid=oldfarm scan_ssid=1 psk=OldFarmpa$$ }
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
+country=US network={ ssid=oldfarm scan_ssid=1 psk=OldFarmpa$$ }
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
+country=US
+ network={ ssid=oldfarm scan_ssid=1 psk=OldFarmpa$$ }
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
+country=US
+ network={ ssid=oldfarm scan_ssid=1 psk=OldFarmpa$$ }
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
+country=US network={ ssid=oldfarm scan_ssid=1 psk=OldFarmpa$$ }
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
+country=US
+
+ network={
+ ssid=oldfarm
+ scan_ssid=1
+ psk=OldFarmpa$$
+ }
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
+country=US
+
+ network={
+ ssid=oldfarm
+ scan_ssid=1
+ psk=OldFarmpa$$
+ }
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
+country=US
+
+ network={
+ ssid=oldfarm
+ scan_ssid=1
+ psk=OldFarmpa$$
+ }
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
+country=US
+
+ network={
+ 	ssid=oldfarm
+ 	scan_ssid=1
+ 	psk=OldFarmpa$$
+ }
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
+country=US
+
+ network={
+ 	 ssid=oldfarm
+ 	scan_ssid=1
+ 	psk=OldFarmpa$$
+ }
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
+country=US
+ network={
+ 	 ssid=oldfarm
+ 	 scan_ssid=1
+ 	 psk=OldFarmpa$$
+ }
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
+country=US
+
+ network={
+ 	 ssid=oldfarm
+ 	 scan_ssid=1
+ 	 psk=OldFarmpa$$
+ }
+Directory /Users/amcmullin/Documents/EZ_Salt/HC-SR04 exists.
