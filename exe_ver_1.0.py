@@ -49,7 +49,10 @@ def main():
 {}{}           Running exe_ver_1.0.py           {}
 {}{}         Any Thoughts on the Color?         {}
 {}{}============================================{}
-""".format(color1,color2,end_color,color1,color2,end_color,color1,color2,end_color,color1,color2,end_color,))
+""".format(color1, color2, end_color,
+           color1, color2, end_color,
+           color1, color2, end_color,
+           color1, color2, end_color))
 
     print("Distance Measurement in Progress\n")
 
@@ -91,13 +94,12 @@ def main():
         if not laptop_testing:
             GPIO.cleanup()
 
-        print('error',error)
+        print('error', error)
 
         if error is 'The error was not initialized':
             error = "Exception Unknown"
         if message is 'The message was not initialized':
             message = 'UnKnown Error'
-
 
         # raise
         # trace_back = traceback.format_exception(*sys.exc_info())
@@ -113,7 +115,6 @@ def main():
 
 
 def while_loop_content(hc_sr04, i):
-
     pulse_start, pulse_end = 0, 0
     time.sleep(2)
     if laptop_testing:
@@ -140,8 +141,8 @@ def while_loop_content(hc_sr04, i):
         """ Deciding if I should send a notification  """
         if hc_sr04.send_notification(percent_left):
             email.send_report(percent_left)
-        print(f"Percent Remaining: {percent_left}%")
-        print(f"Distance: {distance} cm")
+        print("Percent Remaining: {}%".format(percent_left))
+        print("Distance: {} cm".format(distance))
         print()
 
     i += 1
@@ -154,6 +155,7 @@ def do_anything(distance, percent_left):
     if percent_left > 100:
         return False
     return True
+
 
 if __name__ == '__main__':
     laptop_testing = False
