@@ -40,17 +40,16 @@ def main():
     error = 'The Traceback was not initialized'
     message = 'The message was not initialized'
 
-    color1 = '\033[31m'
+    color1 = '    \033[31m'
     color2 = '\033[43m'
-    end_color = '\033[0m\n'
+    end_color = '\033[0m'
 
-    print(f'\n\nasdf'
-          f'asdf'
-          f'{color1}{color2}============================================{end_color}'
-          f'{color1}{color2}           Running exe_ver_1.0.py           {end_color}'
-          f'{color1}{color2}         Any Thoughts on the Color?         {end_color}'
-          f'{color1}{color2}============================================{end_color}'
-          f'\n')
+    print("""\n\n
+{}{}============================================{}
+{}{}           Running exe_ver_1.0.py           {}
+{}{}         Any Thoughts on the Color?         {}
+{}{}============================================{}
+""".format(color1,color2,end_color,color1,color2,end_color,color1,color2,end_color,color1,color2,end_color,))
 
     print("Distance Measurement in Progress\n")
 
