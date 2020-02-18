@@ -1,26 +1,79 @@
 #!/bin/sh
 
+
 if [ $(source setup_complete.sh) = 'true' ]
 then
   echo "Setup has Already been run so we will not do that now"
 else
 
-  path="../../../Documents/EZ_Salt/HC-SR04"
+  echo "updating raspberry pi"
+  sudo apt update
+  echo 'q' | echo 'Y' | sudo apt full-upgrade #1+ hour
+  sudo apt-get update
+  sudo apt-get upgrade
+
+# hostname -I # to get IP-Address
+
+# Here I set up a server. So as long as I have the IP address I can access it locally
+  #sudo apt install apache2 -y
+# move to 'pi' user and edit the index.html file
+  #cd /var/www/html
+  #sudo chown pi: index.html
+# In oder for tapache to understand PHP
+  #sudo apt install php libapache2-mod-php -y
+  #sudo leafpad index.php
+  #add this <?php header( 'Location: /index.html' ) ;  ?>
+
+  # Here I set up a non-local server to acces it anywhere
+  #
+
+# see if the updats above get python3 working
+  echo "upgrading python"
+  sudo apt-get update
+  sudo apt-get install
+  echo "Y" | sudo apt-get install build-essential tk-dev libncurses5-dev libncursesw5-dev libreadline6-dev libdb5.4-dev libgdbm-dev libsqlite3-dev libssl-dev libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev
+
+  wget https://www.python.org/ftp/python/3.7.6/Python-3.7.6.tgz
+  tar -zxvf Python-3.7.6.tgz
+  cd Python-3.7.6
+  ./configure
+  make
+  sudo make altinstall
+
+  sudo rm -r Python-3.7.6
+  rm Python-3.7.6.tar.xz
+  sudo apt-get --purge remove build-essential tk-dev
+  sudo apt-get --purge remove libncurses5-dev libncursesw5-dev libreadline6-dev
+  sudo apt-get --purge remove libdb5.4-dev libgdbm-dev libsqlite3-dev libssl-dev
+  sudo apt-get --purge remove libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev
+  sudo apt-get autoremove
+  sudo apt-get clean
+
+  cd
+  echo "alias gs='git status'" >> .bash_aliases
+  echo "alias python='python3.7'" >> .bash_aliases
+  echo "alias python3='python3.7'" >> .bash_aliases
+  echo "alias pip='pip3.7'" >> .bash_aliases
+  echo "alias pip3='pip3.7'" >> .bash_aliases
+
+
+
+  path="$HOME/Documents/EZ_Salt/HC-SR04"
   if [ -d "$path" ]
   then
     echo "Directory $path exists."
-    cd ~/Documents/EZ_Salt/HC-SR04/ || return
+    cd "$HOME"/Documents/EZ_Salt/HC-SR04/ || return
 
   else
     echo "creating path to repo"
-    mkdir -p ~/Documents/EZ_Salt
-    cd ~/Documents/EZ_Salt/ || return
+    mkdir -p "$HOME"/Documents/EZ_Salt
+    cd "$HOME"/Documents/EZ_Salt/ || return
 
     echo "cloning the git repo from ezsaltdevenv/HC-SR04.git"
     git clone https://ezsaltdevenv:ezsalt98@github.com/ezsaltdevenv/HC-SR04.git
 
     echo "entering git repo"
-    cd ~Documents/EZ_Salt/HC-SR04/ || return
+    cd "$HOME"/Documents/EZ_Salt/HC-SR04/ || return
   fi
 
   echo "setting up wifi"
@@ -28,12 +81,6 @@ else
   sudo ifconfig wlan0 up
   python3 wifi_setup.py
   wpa_cli -i wlan0 reconfigure
-
-  echo "updating raspberry pi"
-  sudo apt update
-  sudo apt full-upgrade
-  sudo apt-get update
-  sudo apt-get upgrade
 
   echo
   echo "changing terminal design temporarily"
@@ -45,7 +92,8 @@ else
 
   echo
   echo "installing the nesseccary libraries"
-  pip install RPi.GPIO
+#  pip install RPi.GPIO
+  echo "Y" | sudo apt-get install rpi.gpio
   pip install smtplib
   echo "not going to instal 'apt-get install python-pandas'"
   #sudo apt-get install python-pandas

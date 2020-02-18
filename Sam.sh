@@ -1,3 +1,10 @@
+#!/bin/sh
+
+# setting up the USB
+# sudo mkdir /media/usb
+# sudo chown -R pi:pi /media/usb
+# sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi
+#
 
 USERNAME='oldfarm'
 PASSWORD='OldFarmpa$$'
@@ -8,15 +15,9 @@ echo "setting up wifi"
 sudo rfkill unblock 0
 sudo ifconfig wlan0 up
 
-printf -v var "
-country=US\\\\n\\\\n
-network={\\\\n
-\\\t\tssid=%s\\\\n
-\\\t\tscan_ssid=1\\\\n
-\\\t\tpsk=%s\\\\n
-}" $USERNAME $PASSWORD
+echo $PASSWORD | wpa_passphrase $USERNAME | sudo tee -a $WIFI_DIR > /dev/null
 
-echo $var >> $WIFI_DIR
+echo $var >> $WIFI_DIR #sudo
 
 wpa_cli -i wlan0 reconfigure
 
@@ -28,7 +29,7 @@ then
 
 else
   echo "creating path to repo"
-  mkdir -p ~/Documents/EZ_Salt
+  mkdir -p "$HOME"/Documents/EZ_Salt
   cd "$HOME"/Documents/EZ_Salt/ || return
 
   echo "cloning the git repo from ezsaltdevenv/HC-SR04.git"
@@ -37,3 +38,9 @@ else
   echo "entering git repo"
   cd "$HOME"/Documents/EZ_Salt/HC-SR04/ || return
 fi
+
+
+#setup crontab here
+  crontab -u pi -l ; echo "* * * * * /usr/bin/sh /home/pi/Documents/EZ_Salt/HC-SR04/run.sh"
+  #to remove
+  #crontab -u pi -l | grep -v "* * * * * /usr/bin/sh /home/pi/Documents/EZ_Salt/HC-SR04/run.sh"

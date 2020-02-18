@@ -1,5 +1,10 @@
 #!/bin/bash
 
+start=$(date "+%S")
+sleep 20
+end=$(date "+%S")
+echo $($end-$start)
+
 echo -ne '#####                     (33%)\r'
 sleep 1
 echo -ne '#############             (66%)\r'
