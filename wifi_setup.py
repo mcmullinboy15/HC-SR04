@@ -1,22 +1,12 @@
 import csv
 import os
 
-""" 
-echo "setting up user's wifi"
-sudo rfkill unblock 0
-sudo ifconfig wlan0 up
 
-echo $PASSWORD | wpa_passphrase $USERNAME | sudo tee -a $WIFI_DIR > /dev/null
-
-echo $var >> $WIFI_DIR #sudo
-wpa_cli -i wlan0 reconfigure
-"""
 USER_DATA_fn = 'user_data.csv'
 WIFI_DIR = '/etc/wpa_supplicant/wpa_supplicant.conf'
 
 print(f"adding wifi credentials on {os.uname()[1]}")
 if os.uname()[1] == 'pi':
-    f = open(WIFI_DIR, "a+")
 
     file = open(USER_DATA_fn)
     data = csv.DictReader(file)
@@ -29,13 +19,16 @@ if os.uname()[1] == 'pi':
         PASSWORD = row['WIFI_password']
     file.close()
 
-    var = "" \
-          "country=US\n\n\
-    network={\n\
-        ssid=" + USERNAME + "\n\
-        scan_ssid=1\n\
-        psk=" + PASSWORD + "\n\
-    }"
-    print(var)
-    # f.write(var)
-    f.close()
+    os.system("echo 'setting up user's wifi'")
+    os.system("sudo rfkill unblock 0")
+    os.system("sudo ifconfig wlan0 up")
+
+    os.system(f"echo {PASSWORD} | wpa_passphrase {USERNAME} | sudo tee -a {WIFI_DIR} > /dev/null")
+
+    os.system(f"echo $var >> {WIFI_DIR}") #sudo
+    os.system("wpa_cli -i wlan0 reconfigure")
+
+
+else:
+    print("\n\n THE USERNAME [ os.uname()[1] ] isn't  pi")
+    os.system("sleep 15")

@@ -42,6 +42,7 @@ else
   cd "$HOME"/Documents/EZ_Salt/HC-SR04/ || return
 fi
 
+sleep 10
 
 crontab -u pi -l > /tmp/crontab
 /bin/echo "* * * * * /usr/bin/sh /home/pi/Documents/EZ_Salt/HC-SR04/run.sh" >> /tmp/crontab
