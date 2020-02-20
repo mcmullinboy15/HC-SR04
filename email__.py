@@ -9,6 +9,16 @@ import csv
 
 # import pandas as pd
 
+"""
+Article about SMS
+https://www.nexmo.com/blog/2019/03/21/sending-sms-from-python-with-google-cloud-functions-dr
+"""
+
+
+
+
+
+
 class Email():
     """ Sending Multiple Messages """
     """ Received from: [ https://nitratine.net/blog/post/how-to-send-an-email-with-python/ ] """
