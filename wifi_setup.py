@@ -1,13 +1,15 @@
 import csv
 import os
 
-"""
-add 'country=US'
-add 'network={}'
-possibly  turn on WIFI
-    sudo rfkill unblock 0
-    sudo ifconfig wlan0 up
-then 'wpa_cli -i wlan0 reconfigure'
+""" 
+echo "setting up user's wifi"
+sudo rfkill unblock 0
+sudo ifconfig wlan0 up
+
+echo $PASSWORD | wpa_passphrase $USERNAME | sudo tee -a $WIFI_DIR > /dev/null
+
+echo $var >> $WIFI_DIR #sudo
+wpa_cli -i wlan0 reconfigure
 """
 USER_DATA_fn = 'user_data.csv'
 WIFI_DIR = '/etc/wpa_supplicant/wpa_supplicant.conf'

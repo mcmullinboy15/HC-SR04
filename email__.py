@@ -69,7 +69,7 @@ class Email():
         self.message = f'This is an message to let you know that you water ' \
                 f'softener salt is almost out of salt!\n\n' \
                 f'You currently have {round(percent)}% salt remaining ' \
-                f'in your tank.' \
+                f'in your tank.\n\n' \
                 f'https://square.site/book/RF2BTQNX9JXWK/ezsalt' \
                 f'\n\nClick here to schedule a salt delivery.\n ' \
                 f'\nThank You and have a Great day!!'

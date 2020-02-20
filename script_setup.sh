@@ -52,10 +52,10 @@ else
 
   sudo rm -rf Python-3.7.6
   rm -rf Python-3.7.6.tar.xz
-  sudo apt-get --purge remove build-essential tk-dev
-  sudo apt-get --purge remove libncurses5-dev libncursesw5-dev libreadline6-dev
-  sudo apt-get --purge remove libdb5.4-dev libgdbm-dev libsqlite3-dev libssl-dev
-  sudo apt-get --purge remove libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev
+#  sudo apt-get --purge remove build-essential tk-dev
+#  sudo apt-get --purge remove libncurses5-dev libncursesw5-dev libreadline6-dev
+#  sudo apt-get --purge remove libdb5.4-dev libgdbm-dev libsqlite3-dev libssl-dev
+#  sudo apt-get --purge remove libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev
   sudo apt-get autoremove
   sudo apt-get clean
 
