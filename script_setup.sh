@@ -25,6 +25,7 @@ else
   #add this <?php header( 'Location: /index.html' ) ;  ?>
 
   # Here I set up a non-local server to acces it anywhere
+  #sudo apt update && sudo apt install -y connectd && sudo connectd_installer
   #
 
 # see if the updats above get python3 working

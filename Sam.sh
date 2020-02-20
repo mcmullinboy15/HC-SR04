@@ -1,10 +1,11 @@
 #!/bin/sh
 
-# setting up the USB
-# sudo mkdir /media/usb
-# sudo chown -R pi:pi /media/usb
-# sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi
-#
+#setting up the USB
+#   sudo mkdir /media/usb
+#   sudo chown -R pi:pi /media/usb
+#   sudo mount /dev/sda1 /media/usb -o uid=pi,gid=pi
+#   cd /media/usb
+#   source Sam.sh
 
 USERNAME='oldfarm'
 PASSWORD='OldFarmpa$$'
@@ -32,6 +33,8 @@ else
   mkdir -p "$HOME"/Documents/EZ_Salt
   cd "$HOME"/Documents/EZ_Salt/ || return
 
+  sleep 30
+
   echo "cloning the git repo from ezsaltdevenv/HC-SR04.git"
   git clone https://ezsaltdevenv:ezsalt98@github.com/ezsaltdevenv/HC-SR04.git
 
@@ -41,6 +44,8 @@ fi
 
 
 #setup crontab here
+#crontab syslog is in
+  # I need to create a crontab first by [crontab -e]
   crontab -u pi -l ; echo "* * * * * /usr/bin/sh /home/pi/Documents/EZ_Salt/HC-SR04/run.sh"
   #to remove
   #crontab -u pi -l | grep -v "* * * * * /usr/bin/sh /home/pi/Documents/EZ_Salt/HC-SR04/run.sh"
