@@ -3,11 +3,9 @@ venv
 .vscode
 .idea
 __pycache__
-
-!message_content.csv
-
 *.pyc
 *.zip
 *.bak
 *.csv
 *.txt
+!message_content.csv
