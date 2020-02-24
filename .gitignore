@@ -1,9 +1,13 @@
-venv/
-__pycache__/
-.vscode/
-.idea/
+venv
+.DS_Store
+.vscode
+.idea
+__pycache__
 
-.csv
-.txt
+!message_content.csv
 
-user_data.csv-e
+*.pyc
+*.zip
+*.bak
+*.csv
+*.txt
