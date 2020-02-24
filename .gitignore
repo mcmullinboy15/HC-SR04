@@ -3,8 +3,7 @@ __pycache__/
 .vscode/
 .idea/
 
-attach.csv
-attach.txt
+.csv
+.txt
 
 user_data.csv-e
-TODO.txt

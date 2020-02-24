@@ -18,7 +18,7 @@ sudo ifconfig wlan0 up
 
 echo $PASSWORD | wpa_passphrase $USERNAME | sudo tee -a $WIFI_DIR > /dev/null
 
-echo $var >> $WIFI_DIR #sudo
+#echo $var >> $WIFI_DIR #sudo
 
 wpa_cli -i wlan0 reconfigure
 

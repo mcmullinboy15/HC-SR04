@@ -37,5 +37,3 @@ def setup():
 if __name__ == '__main__':
     print("asdfasdfasdfasf\nasdfasdf\n\n\n\n\\asdfasfdasdfasfdsan\s    "
           "uhygftudryexdcfghjvbklnuhigytfr6d5esrxdfhcgjvbjygutfudryesxdfcgjhvb\n\n\n\n\nkmjhygutfudrufygh")
-
-    setup()
