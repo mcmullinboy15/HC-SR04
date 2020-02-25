@@ -142,6 +142,7 @@ class Email():
 
         print(self.name_list)
         print(self.send_emails_to)
+        counter = 0
         for send_to_email in self.send_emails_to:  # Lets to this :: for sent_to_email, name in list_of_people:
 
             print(send_to_email)
@@ -156,7 +157,7 @@ class Email():
             msg['Subject'] = str(self.subject)
 
             # Attach the message to the MIMEMultipart object
-            msg.attach(MIMEText(self.header + '\n' + self.message, 'plain'))
+            msg.attach(MIMEText(self.header + self.name_list[counter] + '\n' + self.message, 'plain'))
 
             # Attach the attachment file
             # TODO attach if it is an email not a text
@@ -165,6 +166,7 @@ class Email():
 
             # Send the email to this specific email address
             self.server.sendmail(str(self.email), str(send_to_email), msg.as_string())
+            counter += 1
 
 
     def done(self):

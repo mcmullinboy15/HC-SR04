@@ -44,15 +44,12 @@ def main():
     color2 = '\033[43m'
     end_color = '\033[0m'
 
-    print("""\n\n
-{}{}============================================{}
-{}{}           Running exe_ver_1.0.py           {}
-{}{}         Any Thoughts on the Color?         {}
-{}{}============================================{}
-""".format(color1, color2, end_color,
-           color1, color2, end_color,
-           color1, color2, end_color,
-           color1, color2, end_color))
+    print(f"""\n\n
+{color1}{color2}============================================{end_color}
+{color1}{color2}           Running exe_ver_1.0.py           {end_color}
+{color1}{color2}         Any Thoughts on the Color?         {end_color}
+{color1}{color2}============================================{end_color}
+""")
 
     print("Distance Measurement in Progress\n")
 
@@ -141,8 +138,8 @@ def while_loop_content(hc_sr04, i):
         """ Deciding if I should send a notification  """
         if hc_sr04.send_notification(percent_left):
             email.send_report(percent_left)
-        print("Percent Remaining: {}%".format(percent_left))
-        print("Distance: {} cm".format(distance))
+        print(f"Percent Remaining: {percent_left}%")
+        print(f"Distance: {distance} cm")
         print()
 
     i += 1
@@ -161,8 +158,7 @@ if __name__ == '__main__':
     laptop_testing = False
     email = Email()
 
-    print(os.uname()[1])
-    if not str(os.uname()[1]).__contains__('pi@raspberry'):
+    if not str(os.uname()[1]).__contains__('raspberrypi'):
         laptop_testing = True
     if not laptop_testing:
         import RPi.GPIO as GPIO

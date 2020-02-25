@@ -25,7 +25,7 @@ if os.uname()[1] == 'pi':
 
     os.system(f"echo {PASSWORD} | wpa_passphrase {USERNAME} | sudo tee -a {WIFI_DIR} > /dev/null")
 
-    os.system(f"echo $var >> {WIFI_DIR}") #sudo
+    os.system(f"echo $var >> {WIFI_DIR}")
     os.system("wpa_cli -i wlan0 reconfigure")
 
 

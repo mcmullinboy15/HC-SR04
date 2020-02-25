@@ -1,10 +1,11 @@
 SECONDS=0
 echo "Running script_setup.sh"
-source script_setup.sh
+. script_setup.sh
 
 echo "Running the sensor"
 python3 exe_ver_1.0.py
 
+sleep 3
 duration=$SECONDS
 echo "run.sh has been running for $(($duration / 60)) minutes and $(($duration % 60)) seconds."
 

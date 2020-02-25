@@ -1,8 +1,11 @@
 #!/bin/sh
 
-SECONDS=0
+# rpi.gpio
+# right before not importing pandas
 
-if [ "$(. setup_complete.sh)" = 'true' ]
+SECONDS=
+
+if [ "$(. is_setup_complete.sh)" = 'true' ]
 then
   echo "Setup has Already been run so we will not do that now"
 else
@@ -33,11 +36,7 @@ else
 
 # see if the updats above get python3 working
   echo "upgrading python"
-  sudo apt-get update
-  sleep 5
   sudo apt-get install
-  sleep 5
-
   . python_update.sh
 
   sleep 10
@@ -48,7 +47,7 @@ else
   echo "alias python3='python3.7'" >> .bash_aliases
   echo "alias pip='pip3.7'" >> .bash_aliases
   echo "alias pip3='pip3.7'" >> .bash_aliases
-  . ~/.bashrc 
+  . ~/.bashrc
 
 
   path="$HOME/Documents/EZ_Salt/HC-SR04"
@@ -72,31 +71,20 @@ else
   sleep 10
 
   echo "setting up wifi"
-  sudo rfkill unblock 0
-  sudo ifconfig wlan0 up
-  sleep 5
   python3 wifi_setup.py
-  sleep 5
-  wpa_cli -i wlan0 reconfigure
-  
+
   sleep 20
 
-  echo
   echo "changing terminal design temporarily"
   #chsh -s /bin/bash
-  #'This has the pi@raspberry tag'
-  #os.system("export PS1='\[\033[32m\]\[\033[m\]@\[\033[32m\] \[\033[33;1m\]\w\[\033[m\] (\$(git branch 2>/dev/null | grep '^*' | colrm 1 2)) $ '")
+  #'This has the pi@raspberry tag'    export PS1='\[\033[32m\]\[\033[m\]@\[\033[32m\] \[\033[33;1m\]\w\[\033[m\] (\$(git branch 2>/dev/null | grep '^*' | colrm 1 2)) $ '
   #'This has the time as the tag'
   export PS1='\[\033[0;32m\]\[\033[0m\033[0;32m\][\@]\[\033[0;33m\]\w\[\033[0;36m\]$(__git_ps1)\n\[\033[0;32m\]\[\033[0m\033[0;32m\]\$\[\033[0m\033[0;32m\]\[\033[0m\] '
 
-  echo
   echo "installing the nesseccary libraries"
-#  pip install RPi.GPIO
-  echo "Y" | sudo apt-get install rpi.gpio
+  sudo apt-get -y install rpi.gpio
   pip install smtplib
   pip install twilio
-  echo "not going to instal 'apt-get install python-pandas'"
-  #sudo apt-get install python-pandas
   
   sleep 5
 
