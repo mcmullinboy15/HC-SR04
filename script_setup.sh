@@ -3,7 +3,7 @@
 # rpi.gpio
 # right before not importing pandas
 
-SECONDS=
+SECONDS=0
 
 if [ "$(. is_setup_complete.sh)" = 'true' ]
 then
@@ -40,15 +40,6 @@ else
   . python_update.sh
 
   sleep 10
-
-  cd || exit
-  echo "alias gs='git status'" >> .bash_aliases
-  echo "alias python='python3.7'" >> .bash_aliases
-  echo "alias python3='python3.7'" >> .bash_aliases
-  echo "alias pip='pip3.7'" >> .bash_aliases
-  echo "alias pip3='pip3.7'" >> .bash_aliases
-  . ~/.bashrc
-
 
   path="$HOME/Documents/EZ_Salt/HC-SR04"
   if [ -d "$path" ]

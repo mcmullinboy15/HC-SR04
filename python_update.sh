@@ -4,9 +4,9 @@
 #   pip /  pip3.7 is super ugly
 
   sleep 10
-
-  sudo apt-get update
-  sudo apt-get upgrade
+# echo "q"
+  sudo apt-get -y update
+  sudo apt-get -y upgrade
   sudo apt-get -y dist-upgrade
   sudo apt-get -y install build-essential checkinstall python-dev python-setuptools python-pip python-smbus
   sudo apt-get -y install libreadline-gplv2-dev libncursesw5-dev libgdbm-dev libc6-dev libbz2-dev
@@ -23,15 +23,22 @@
   sleep 2
 
   cd Python-3.7.0 || exit
-  sudo -s
-  bash configure
-  make altinstall
-  exit
+  echo "bash configure" | sudo -s
+  echo "make altinstall" | sudo -s
 
-  sleep 5
+  sleep 2
+
+  cd || exit
+  echo "alias gs='git status'" >> .bash_aliases
+  echo "alias python='python3.7'" >> .bash_aliases
+  echo "alias python3='python3.7'" >> .bash_aliases
+  echo "alias pip='pip3.7'" >> .bash_aliases
+  echo "alias pip3='pip3.7'" >> .bash_aliases
+  . ~/.bashrc
+
+  sleep 2
 
   pip install --user pi --upgrade pip
-  cd || exit
 
   sleep 10
 

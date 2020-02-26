@@ -6,7 +6,7 @@ USER_DATA_fn = 'user_data.csv'
 WIFI_DIR = '/etc/wpa_supplicant/wpa_supplicant.conf'
 
 print(f"adding wifi credentials on {os.uname()[1]}")
-if os.uname()[1] == 'pi':
+if os.uname()[1].__contains__('pi'):
 
     file = open(USER_DATA_fn)
     data = csv.DictReader(file)
