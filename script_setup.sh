@@ -11,9 +11,13 @@ then
 else
 
   echo "updating raspberry pi"
+  echo "apt update"
   sudo apt update
+  echo "full-upgrade"
   echo 'q' | sudo apt -y full-upgrade #1+ hour
+  echo  "apt-get update"
   sudo apt-get update
+  echo "apt-get upgrade"
   sudo apt-get upgrade
 
 # hostname -I # to get IP-Address
@@ -61,7 +65,7 @@ else
 
   sleep 10
 
-  echo "setting up wifi"
+  echo "setting up user wifi"
   python3 wifi_setup.py
 
   sleep 20
@@ -73,8 +77,11 @@ else
   export PS1='\[\033[0;32m\]\[\033[0m\033[0;32m\][\@]\[\033[0;33m\]\w\[\033[0;36m\]$(__git_ps1)\n\[\033[0;32m\]\[\033[0m\033[0;32m\]\$\[\033[0m\033[0;32m\]\[\033[0m\] '
 
   echo "installing the nesseccary libraries"
+  echo "sudo apt-get -y install rpi.gpio"
   sudo apt-get -y install rpi.gpio
+  echo "pip install smtplib"
   pip install smtplib
+  echo "pip install twilio"
   pip install twilio
   
   sleep 5
