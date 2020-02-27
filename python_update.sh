@@ -53,7 +53,7 @@
 
   echo "Updating  pip3.7 to the funky pip"
   echo "pip install --user pi --upgrade pip"
-  pip install --user pi --upgrade pip
+  pip install -y --user pi --upgrade pip
 
   sleep 10
 

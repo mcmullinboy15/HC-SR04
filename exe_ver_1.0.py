@@ -106,6 +106,7 @@ def main():
         # print(trace_back)
         # for i in trace_back:
         #     formated_exe = f"{formated_exe}{i}"
+        email = Email()
         email.send_exception_error(error=message, traceback=error)
 
         sys.exit()
@@ -137,6 +138,7 @@ def while_loop_content(hc_sr04, i):
     if do_anything(distance, percent_left):
         """ Deciding if I should send a notification  """
         if hc_sr04.send_notification(percent_left):
+            email = Email()
             email.send_report(percent_left)
         print(f"Percent Remaining: {percent_left}%")
         print(f"Distance: {distance} cm")
@@ -156,7 +158,6 @@ def do_anything(distance, percent_left):
 
 if __name__ == '__main__':
     laptop_testing = False
-    email = Email()
 
     if not str(os.uname()[1]).__contains__('raspberrypi'):
         laptop_testing = True

@@ -7,18 +7,18 @@ SECONDS=0
 
 if [ "$(. is_setup_complete.sh)" = 'true' ]
 then
-  echo "Setup has Already been run so we will not do that now"
+  echo "Skipping Setup because its Already Done"
 else
 
   echo "updating raspberry pi"
   echo "apt update"
-  sudo apt update
+  sudo -y apt update
   echo "full-upgrade"
   echo 'q' | sudo apt -y full-upgrade #1+ hour
   echo  "apt-get update"
-  sudo apt-get update
+  sudo -y apt-get update
   echo "apt-get upgrade"
-  sudo apt-get upgrade
+  sudo -y apt-get upgrade
 
 # hostname -I # to get IP-Address
 
@@ -40,7 +40,7 @@ else
 
 # see if the updats above get python3 working
   echo "upgrading python"
-  sudo apt-get install
+  sudo -y apt-get install
   . python_update.sh
 
   sleep 10
@@ -79,10 +79,13 @@ else
   echo "installing the nesseccary libraries"
   echo "sudo apt-get -y install rpi.gpio"
   sudo apt-get -y install rpi.gpio
+  pip install -y RPi.GPIO
   echo "pip install smtplib"
-  pip install smtplib
+  pip install -y smtplib
   echo "pip install twilio"
-  pip install twilio
+  pip install -y twilio
+#  brew tap twilio/brew && brew install twilio
+
   
   sleep 5
 

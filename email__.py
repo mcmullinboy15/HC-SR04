@@ -15,10 +15,6 @@ https://www.nexmo.com/blog/2019/03/21/sending-sms-from-python-with-google-cloud-
 """
 
 
-
-
-
-
 class Email():
     """ Sending Multiple Messages """
     """ Received from: [ https://nitratine.net/blog/post/how-to-send-an-email-with-python/ ] """
@@ -48,11 +44,12 @@ class Email():
         self.data = '[ DATA ]'
 
         self.carriers = {
-                'att'    : '@mms.att.net',
-                'tmoblie': '@tmomail.net',
-                'verizon': '@vtext.com',
-                'sprint' : '@page.nextel.com'
+            'att': '@mms.att.net',
+            'tmoblie': '@tmomail.net',
+            'verizon': '@vtext.com',
+            'sprint': '@page.nextel.com'
         }
+
         self.send_emails_to = ['ezsalt.dev.env@gmail.com']  # , 'mcmullinboy15@gmail.com']
 
     def send_exception_error(self, error, traceback):
@@ -67,18 +64,18 @@ class Email():
         self.subject = self.message_dict['report_subject']
         self.header = self.message_dict['header']
         self.message = f'This is an message to let you know that you water ' \
-                f'softener salt is almost out of salt!\n\n' \
-                f'You currently have {round(percent)}% salt remaining ' \
-                f'in your tank.\n\n' \
-                f'https://square.site/book/RF2BTQNX9JXWK/ezsalt' \
-                f'\n\nClick here to schedule a salt delivery.\n ' \
-                f'\nThank You and have a Great day!!'
+                       f'softener salt is almost out of salt!\n\n' \
+                       f'You currently have {round(percent)}% salt remaining ' \
+                       f'in your tank.\n\n' \
+                       f'https://square.site/book/RF2BTQNX9JXWK/ezsalt' \
+                       f'\n\nClick here to schedule a salt delivery.\n ' \
+                       f'\nThank You and have a Great day!!'
 
         self.data = f'percent, {percent}\n' \
-            f'height, {4}\n' \
-            f'max_capacity, {3}\n' \
-            f'bags_to_fill, {1.33}\n' \
-            f''
+                    f'height, {4}\n' \
+                    f'max_capacity, {3}\n' \
+                    f'bags_to_fill, {1.33}\n' \
+                    f''
         self.send_email(True)
 
     def send_email(self, is_report=False):
@@ -86,20 +83,24 @@ class Email():
         file = open(self.USER_DATA_fn)
         csv_data = csv.DictReader(file)
 
-        # also append 'EZ_SALT'
         for row in csv_data:
             name = str(row['name'])
             names = name.split(',')
+
+            # adding the email of the error as the name that gets sent to ezsalt.dev.env@gmail.com
+            self.name_list.append(row['email'])
+
             for name in names:
                 if name != '':
                     self.name_list.append(name)
 
             email_temp = str(row['email'])
             emails = email_temp.split(',')
+
             for _email_ in emails:
                 if _email_ != '':
                     self.send_emails_to.append(_email_)
-                    # send_emails_to = email_list
+
         file.close()
 
         file_location = self.txt_location
@@ -127,7 +128,7 @@ class Email():
         self.part.set_payload(attachment.read())
         encoders.encode_base64(self.part)
         self.part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
-
+        attachment.close()
 
     def connect(self):
         # Connect and login to the email server
@@ -135,7 +136,6 @@ class Email():
         self.server.starttls()
         self.server.login(self.email, self.password)
         return self.server
-
 
     def send(self):
         """ Loop over each email to send to """
@@ -167,7 +167,6 @@ class Email():
             # Send the email to this specific email address
             self.server.sendmail(str(self.email), str(send_to_email), msg.as_string())
             counter += 1
-
 
     def done(self):
         """ Quit the email server when everything is done """

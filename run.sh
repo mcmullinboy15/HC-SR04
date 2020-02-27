@@ -1,6 +1,6 @@
 SECONDS=0
 echo "Running script_setup.sh"
-. script_setup.sh
+. -y script_setup.sh
 
 echo "Running the sensor"
 python3 exe_ver_1.0.py

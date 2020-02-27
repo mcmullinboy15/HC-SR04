@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# make setup_complete 1, -1 it's own file so it can be  edited
+
 IFS=","
 notline1=false
 first_f1_is_setup_complete=false
