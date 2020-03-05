@@ -9,16 +9,15 @@ if [ "$(. is_setup_complete.sh)" = 'true' ]
 then
   echo "Skipping Setup because its Already Done"
 else
-
   echo "updating raspberry pi"
-  echo "apt update"
-  sudo -y apt update
+
   echo "full-upgrade"
   echo 'q' | sudo apt -y full-upgrade #1+ hour
   echo  "apt-get update"
-  sudo -y apt-get update
+  sudo apt-get update
   echo "apt-get upgrade"
-  sudo -y apt-get upgrade
+#  echo "" |      # It said the desktop might hvae changed press ok
+  sudo apt-get -y upgrade --fix-missing
 
 # hostname -I # to get IP-Address
 
@@ -40,7 +39,7 @@ else
 
 # see if the updats above get python3 working
   echo "upgrading python"
-  sudo -y apt-get install
+  sudo apt-get install
   . python_update.sh
 
   sleep 10
@@ -86,18 +85,20 @@ else
   pip install -y twilio
 #  brew tap twilio/brew && brew install twilio
 
-  
   sleep 5
+
+  echo "Setting up CronTab"
+  . _crontab.sh
+
+  sleep 2
 
   echo "when finished I'll change the -1 to 1"
   . setup_complete.sh
   
-  sleep 5
+  sleep 2
 fi
-echo
 
-
-
+echo -e "\n\n"
 
 duration=$SECONDS
 echo "Script_setup.sh Ran in $(($duration / 60)) minutes and $(($duration % 60)) seconds."

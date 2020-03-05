@@ -5,9 +5,6 @@ echo "Running script_setup.sh"
 echo "Pulling new data"
 git pull
 
-echo "Setting up CronTab"
-. _crontab.sh
-
 echo "Running the sensor"
 python3 exe_ver_1.0.py
 
