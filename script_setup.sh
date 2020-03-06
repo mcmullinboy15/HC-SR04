@@ -78,6 +78,12 @@ else
 
   sleep 10
 
+  # What if I got this data off the Database
+  echo 'setup_complete,email,name,phone_number,username,password,home_address,WIFI_username,WIFI_password,size_of_container,single_noti_1,single_noti_2,single_noti_3,daily_noti,send_daily,time_of_day
+-1,"ezsalt.dev.env@gmail.com","Andrew","8018973786","ezsalt","ezsalt98","3869 w 9380 s, West Jordan, Ut 84088","oldfarm-5G","OldFarmpa$$",121.5,50,30,-1,15,TRUE,8'
+
+  sleep 3
+
   if ping -q -c 1 -W 1 google.com >/dev/null; then
     echo "\033[34m  The network is up  \033[0m"
   else
@@ -87,6 +93,7 @@ else
 
 
   sleep 20
+
 
   echo "\033[34m  changing terminal design temporarily  \033[0m"
   #chsh -s /bin/bash
