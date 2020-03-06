@@ -21,6 +21,13 @@ else
 #  echo "" |      # It said the desktop might hvae changed press ok
   sudo apt-get -y upgrade --fix-missing
 
+
+  echo "\033[34m  Enableing ssh server  \033[0m"
+  sudo systemctl enable ssh
+
+  echo "\033[34m  starting something??  maybe ssh  \033[0m"
+  sudo systemctl start ssh
+
 # hostname -I # to get IP-Address
 
 # Here I set up a server. So as long as I have the IP address I can access it locally
