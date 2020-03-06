@@ -9,5 +9,5 @@ __pycache__
 *.csv
 *.csv-e
 *.txt
-test.*
+*test.*
 !message_content.csv
