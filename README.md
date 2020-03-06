@@ -33,4 +33,13 @@ Running the Sensor:
         - The setup and imports will be skipped. 
         - The program will call `git pull` to download any updates
         - Then runs the file `exe_ver_1.0.py` which runs the sensor loop
+        
+        
+exists
+    vaild 25 id
+    
+manual idea
+    get email to send as id/create Id
+    
+send grid
     

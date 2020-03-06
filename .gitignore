@@ -7,5 +7,6 @@ __pycache__
 *.zip
 *.bak
 *.csv
+*.csv-e
 *.txt
 !message_content.csv
