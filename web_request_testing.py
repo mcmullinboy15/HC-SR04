@@ -2,7 +2,6 @@ import requests
 import csv
 
 id_file = "25_id.txt"
-
 USER_DATA_fn = 'user_data.csv'
 
 
