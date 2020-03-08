@@ -10,16 +10,11 @@ def attack_website(distance):
 
     try:
         f = open(id_file, 'r')
-
-        # print(f.read())
-
         code = f.read()
-        print(code)
+        f.close()
 
-        # if there is a 25 digit thing inside the file
         url = f"http://ezsalt.services/API.php?Token={Token}&Code={code}&Distance={distance}"
 
-        print(url)
         r = requests.get(url=url)
         print(r.text)
 
@@ -31,18 +26,16 @@ def attack_website(distance):
         email = None
         for row in user_data:
             email = row['email']
+        f.close()
 
         url = f"http://ezsalt.services/API.php?Token={Token}&Email={email}"
 
-        print(url)
         r = requests.get(url=url)
         print(r.text)
         code_ = r.text
 
         f = open(id_file, 'w')
         f.write(str(code_))
-
-    finally:
         f.close()
 
     return r

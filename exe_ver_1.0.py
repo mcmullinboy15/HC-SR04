@@ -6,7 +6,7 @@ import logging
 
 from email__ import Email
 from HC_SR04_class import HC_SR04
-from web_request import attack_website
+import web_request
 
 fake_start = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 #             86%    72%    58%      50%    30%      15%       9%      7%      6%      4%
@@ -142,12 +142,12 @@ def while_loop_content(hc_sr04, i):
             email = Email()
             email.send_report(percent_left)
 
-        attack_website(distance)
+        web_request.attack_website(distance)
 
         print(f"Percent Remaining: {percent_left}%")
         print(f"Distance: {distance} cm")
         print()
-        os.system('sleep 3600')
+        # os.system('sleep 3600')
 
     i += 1
     return hc_sr04, i

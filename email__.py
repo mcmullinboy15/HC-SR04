@@ -167,6 +167,7 @@ class Email():
             # Send the email to this specific email address
             self.server.sendmail(str(self.email), str(send_to_email), msg.as_string())
             counter += 1
+            self.done()
 
     def done(self):
         """ Quit the email server when everything is done """
