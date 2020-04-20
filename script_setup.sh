@@ -3,22 +3,30 @@
 # rpi.gpio
 # right before not importing pandas
 
+desired_python_version="Python 3.7"
+
 SECONDS=0
 
 if [ "$(. is_setup_complete.sh)" = 'true' ]
 then
-  echo "Skipping Setup because its Already Done"
+  echo "\033[34m  Skipping Setup because its Already Done  \033[0m"
 else
+  echo "\033[34m  updating raspberry pi  \033[0m"
 
-  echo "updating raspberry pi"
-  echo "apt update"
-  sudo -y apt update
-  echo "full-upgrade"
+  echo "\033[34m  full-upgrade  \033[0m"
   echo 'q' | sudo apt -y full-upgrade #1+ hour
-  echo  "apt-get update"
-  sudo -y apt-get update
-  echo "apt-get upgrade"
-  sudo -y apt-get upgrade
+  echo "\033[34m  apt-get update  \033[0m"
+  sudo apt-get update
+  echo "\033[34m  apt-get upgrade  \033[0m"
+#  echo "" |      # It said the desktop might hvae changed press ok
+  sudo apt-get -y upgrade --fix-missing
+
+
+  echo "\033[34m  Enableing ssh server  \033[0m"
+  sudo systemctl enable ssh
+
+  echo "\033[34m  starting something??  maybe ssh  \033[0m"
+  sudo systemctl start ssh
 
 # hostname -I # to get IP-Address
 
@@ -38,66 +46,85 @@ else
   # echo 'ezsalt.dev.env@gmail.com'
   # echo 'ezsalt98'
 
-# see if the updats above get python3 working
-  echo "upgrading python"
-  sudo -y apt-get install
-  . python_update.sh
+
+  if [[ "$( python3 --version )" =~ $desired_python_version ]]
+  then
+    echo "\033[34m  PYTHON Already exists  \033[0m"
+  else
+    echo "\033[34m  upgrading python  \033[0m"
+    sudo apt-get install
+    . python_update.sh
+  fi
 
   sleep 10
 
   path="$HOME/Documents/EZ_Salt/HC-SR04"
   if [ -d "$path" ]
   then
-    echo "Directory $path exists."
+    echo "\033[34m  Directory $path exists.  \033[0m"
     cd "$HOME"/Documents/EZ_Salt/HC-SR04/ || return
 
   else
-    echo "creating path to repo"
+    echo "\033[34m  creating path to repo  \033[0m"
     mkdir -p "$HOME"/Documents/EZ_Salt
     cd "$HOME"/Documents/EZ_Salt/ || return
 
-    echo "cloning the git repo from ezsaltdevenv/HC-SR04.git"
+    echo "\033[34m  cloning the git repo from ezsaltdevenv/HC-SR04.git  \033[0m"
     git clone https://ezsaltdevenv:ezsalt98@github.com/ezsaltdevenv/HC-SR04.git
 
-    echo "entering git repo"
+    echo "\033[34m  entering git repo  \033[0m"
     cd "$HOME"/Documents/EZ_Salt/HC-SR04/ || return
   fi
 
   sleep 10
 
-  echo "setting up user wifi"
-  python3 wifi_setup.py
+  # What if I got this data off the Database
+  # TODO make sure this file is run and all is well
+  . create_user_file.sh
+
+  sleep 3
+
+  if ping -q -c 1 -W 1 google.com >/dev/null; then
+    echo "\033[34m  The network is up  \033[0m"
+  else
+    echo "\033[34m  setting up user wifi  \033[0m"
+    python3 wifi_setup.py
+  fi
+
 
   sleep 20
 
-  echo "changing terminal design temporarily"
+
+  echo "\033[34m  changing terminal design temporarily  \033[0m"
   #chsh -s /bin/bash
   #'This has the pi@raspberry tag'    export PS1='\[\033[32m\]\[\033[m\]@\[\033[32m\] \[\033[33;1m\]\w\[\033[m\] (\$(git branch 2>/dev/null | grep '^*' | colrm 1 2)) $ '
   #'This has the time as the tag'
   export PS1='\[\033[0;32m\]\[\033[0m\033[0;32m\][\@]\[\033[0;33m\]\w\[\033[0;36m\]$(__git_ps1)\n\[\033[0;32m\]\[\033[0m\033[0;32m\]\$\[\033[0m\033[0;32m\]\[\033[0m\] '
 
-  echo "installing the nesseccary libraries"
-  echo "sudo apt-get -y install rpi.gpio"
+  echo "\033[34m  installing the nesseccary libraries  \033[0m"
+  echo "\033[34m  sudo apt-get -y install rpi.gpio  \033[0m"
   sudo apt-get -y install rpi.gpio
   pip install -y RPi.GPIO
-  echo "pip install smtplib"
+  echo "\033[34m  pip install smtplib  \033[0m"
   pip install -y smtplib
-  echo "pip install twilio"
+  echo "\033[34m  pip install twilio  \033[0m"
   pip install -y twilio
 #  brew tap twilio/brew && brew install twilio
 
-  
   sleep 5
 
-  echo "when finished I'll change the -1 to 1"
+  echo "\033[34m  Setting up CronTab  \033[0m"
+  . _crontab.sh
+
+  sleep 2
+
+  echo "\033[34m  when finished I'll change the -1 to 1  \033[0m"
   . setup_complete.sh
   
-  sleep 5
+  sleep 2
 fi
-echo
 
-
-
+echo -e "\n\n"
 
 duration=$SECONDS
-echo "Script_setup.sh Ran in $(($duration / 60)) minutes and $(($duration % 60)) seconds."
+echo "\033[34m  Script_setup.sh Ran in $(($duration / 60)) minutes and $(($duration % 60)) seconds.  \033[0m"
