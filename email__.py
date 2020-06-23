@@ -21,7 +21,7 @@ class Email():
 
     def __init__(self):
         self.email = 'ezsalt.dev.env@gmail.com'
-        self.password = 'ezsalt98'
+        self.password = '********'
         self.attach_file = False
         self.USER_DATA_fn = 'user_data.csv'
         self.server = self.connect()
