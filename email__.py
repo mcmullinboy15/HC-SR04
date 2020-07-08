@@ -17,11 +17,18 @@ https://www.nexmo.com/blog/2019/03/21/sending-sms-from-python-with-google-cloud-
 
 class Email():
     """ Sending Multiple Messages """
+    """ 
+    Things to do to get this to work: 
+        
+     - Visit https://myaccount.google.com/lesssecureapps to setup your  
+        account to allow less secure app access such as this one
+        
+    """
     """ Received from: [ https://nitratine.net/blog/post/how-to-send-an-email-with-python/ ] """
 
     def __init__(self):
         self.email = 'ezsalt.dev.env@gmail.com'
-        self.password = 'ezsalt98'
+        self.password = '********'
         self.attach_file = False
         self.USER_DATA_fn = 'user_data.csv'
         self.server = self.connect()

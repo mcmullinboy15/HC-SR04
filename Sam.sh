@@ -12,15 +12,20 @@ PASSWORD='OldFarmpa$$'
 
 WIFI_DIR='/etc/wpa_supplicant/wpa_supplicant.conf'
 
-echo "setting up wifi"
-sudo rfkill unblock 0
-sudo ifconfig wlan0 up
+# change to if we are already connected
+if false
+then
 
-echo $PASSWORD | wpa_passphrase $USERNAME | sudo tee -a $WIFI_DIR > /dev/null
+  echo "setting up wifi"
+  sudo rfkill unblock 0
+  sudo ifconfig wlan0 up
 
-#echo $var >> $WIFI_DIR #sudo
+  echo $PASSWORD | wpa_passphrase $USERNAME | sudo tee -a $WIFI_DIR > /dev/null
 
-wpa_cli -i wlan0 reconfigure
+  #echo $var >> $WIFI_DIR #sudo
+
+  wpa_cli -i wlan0 reconfigure
+fi
 
 path="$HOME/Documents/EZ_Salt/HC-SR04"
 if [ -d "$path" ]
