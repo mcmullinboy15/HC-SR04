@@ -1,0 +1,13 @@
+venv
+.DS_Store
+.vscode
+.idea
+__pycache__
+*.pyc
+*.zip
+*.bak
+*.csv
+*.csv-e
+*.txt
+*test.*
+!message_content.csv

@@ -1,206 +1,181 @@
-''' Sending Multiple Messages '''
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
+import email
 import os.path
 import csv
 
 # import pandas as pd
 
-email = 'ezsalt.dev.env@gmail.com'
-password = 'ezsalt98'
-
-USER_DATA_fn = 'user_data.csv'
-
-# Eventually I want to store all errors but not neccessary.
-# I think I just need to remember that I am using the same file everytime there is an email sent out
-csv_location = 'attach.csv'
-txt_location = 'attach.txt'
+"""
+Article about SMS
+https://www.nexmo.com/blog/2019/03/21/sending-sms-from-python-with-google-cloud-functions-dr
+"""
 
 
-def send_exception_error(error, traceback, attach_file=True, send_emails_to=None):
-    subject = error
-    header = 'There has been an Interuption and/or Error that has Occured' \
-             '\nPlease Contact EZ_Salt Support at 801-897-3786\n\n'
-    data = traceback  # backTrace, etc.
-    send_email(subject, header, data, False, attach_file, send_emails_to)
+class Email():
+    """ Sending Multiple Messages """
+    """ 
+    Things to do to get this to work: 
+        
+     - Visit https://myaccount.google.com/lesssecureapps to setup your  
+        account to allow less secure app access such as this one
+        
+    """
+    """ Received from: [ https://nitratine.net/blog/post/how-to-send-an-email-with-python/ ] """
 
+    def __init__(self):
+        self.email = 'ezsalt.dev.env@gmail.com'
+        self.password = '********'
+        self.attach_file = False
+        self.USER_DATA_fn = 'user_data.csv'
+        self.server = self.connect()
 
-def send_report(percent, attach_file=True, send_emails_to=None):  # List of email addresses
+        self.name_list = list()
+        self.part = None
 
-    subject = f'Your Water Softener is {percent}% filled'
-    header = f'Data about your Water Softener:\n'
-    data = f'Percent, {percent}\n' \
-           f'height, {4}\n' \
-           f'max_capacity, {3}\n' \
-           f'bags_to_fill, {1.33}\n' \
-           f''
-    send_email(subject, header, data, True, attach_file, send_emails_to)
+        # Eventually I want to store all errors but not neccessary.
+        # I think I just need to remember that I am using the same file everytime there is an email sent out
+        self.csv_location = 'attach.csv'
+        self.txt_location = 'attach.txt'
 
+        for row in csv.DictReader(open('message_content.csv')):
+            self.message_dict = row
 
-def send_email(subject, header, data, is_report=False, attach_file=True, send_emails_to=None):
-    part = None
-    make_list = list()
+        # This is the structure of the messages
+        self.subject = '[ SUBJECT HERE ]'
+        self.header = '[ HEADER ]'
+        self.message = '[ MESSAGE ]'
+        self.data = '[ DATA ]'
 
-    file = open(USER_DATA_fn)
-    csv_data = csv.DictReader(file)
+        self.carriers = {
+            'att': '@mms.att.net',
+            'tmoblie': '@tmomail.net',
+            'verizon': '@vtext.com',
+            'sprint': '@page.nextel.com'
+        }
 
-    for row in csv_data:
-        email = str(row['email'])
-        emails = email.split(',')
-        for email in emails:
-            if email != '':
-                make_list.append(email)
-                send_emails_to = make_list
-    file.close()
+        self.send_emails_to = ['ezsalt.dev.env@gmail.com']  # , 'mcmullinboy15@gmail.com']
 
-    if send_emails_to is None:
-        send_emails_to = ['ezsalt.dev.env@gmail.com']  # , 'mcmullinboy15@gmail.com']
-    else:
-        send_emails_to = list(send_emails_to)
-        send_emails_to.append('ezsalt.dev.env@gmail.com')
+    def send_exception_error(self, error, traceback):
+        self.subject = error
+        self.header = self.message_dict['header']
+        self.message = self.message_dict['exception_message']
+        self.data = traceback
+        self.send_email(False)
 
-    print(send_emails_to)
-    file_location = txt_location
-    if is_report:
-        file_location = csv_location
+    def send_report(self, percent):  # List of email addresses
 
-    if attach_file:
-        writetofile(file_location, header, data)
-        part = create_attachment(file_location)
-    server = connect()
-    send(send_emails_to, subject=str(subject), first_line=str(header), message=str(data), server=server, part=part)
+        self.subject = self.message_dict['report_subject']
+        self.header = self.message_dict['header']
+        self.message = f'This is an message to let you know that you water ' \
+                       f'softener salt is almost out of salt!\n\n' \
+                       f'You currently have {round(percent)}% salt remaining ' \
+                       f'in your tank.\n\n' \
+                       f'https://square.site/book/RF2BTQNX9JXWK/ezsalt' \
+                       f'\n\nClick here to schedule a salt delivery.\n ' \
+                       f'\nThank You and have a Great day!!'
 
+        self.data = f'percent, {percent}\n' \
+                    f'height, {4}\n' \
+                    f'max_capacity, {3}\n' \
+                    f'bags_to_fill, {1.33}\n' \
+                    f''
+        self.send_email(True)
 
-def writetofile(file_location, header, data):
-    # TODO  I added this to make the file
-    print('attaching: \n'
-          f'{header}'
-          f'{data}'
-          f'')
-    attaching = open(file_location, 'w')
-    attaching.write(str(header))
-    attaching.write(str(data))
-    attaching.close()
+    def send_email(self, is_report=False):
 
+        file = open(self.USER_DATA_fn)
+        csv_data = csv.DictReader(file)
 
-# This file wants to be opened in html reader when it is a .txt ... Fix that Andrew
-def create_attachment(file_location):
-    # Create the attachment file (only do it once)
-    filename = os.path.basename(file_location)
-    attachment = open(file_location, "rb")
-    part = MIMEBase('application', 'octet-stream')
-    part.set_payload(attachment.read())
-    encoders.encode_base64(part)
-    part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
-    return part
+        for row in csv_data:
+            name = str(row['name'])
+            names = name.split(',')
 
+            # adding the email of the error as the name that gets sent to ezsalt.dev.env@gmail.com
+            self.name_list.append(row['email'])
 
-def connect():
-    # Connect and login to the email server
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.starttls()
-    server.login(email, password)
-    return server
+            for name in names:
+                if name != '':
+                    self.name_list.append(name)
 
+            email_temp = str(row['email'])
+            emails = email_temp.split(',')
 
-def send(send_to_emails, subject, first_line, message, server, part):
-    # Loop over each email to send to
-    for send_to_email in send_to_emails:
-        # Setup MIMEMultipart for each email address (if we don't do this, the emails will concat on each email sent)
-        msg = MIMEMultipart()
-        msg['From'] = email
-        msg['To'] = send_to_email
-        msg['Subject'] = subject
+            for _email_ in emails:
+                if _email_ != '':
+                    self.send_emails_to.append(_email_)
 
-        # Attach the message to the MIMEMultipart object
-        msg.attach(MIMEText(first_line + '\n' + message, 'plain'))
-        # Attach the attachment file
-        msg.attach(part)
+        file.close()
 
-        # Send the email to this specific email address
-        server.sendmail(email, send_to_email, msg.as_string())
-    return server
+        file_location = self.txt_location
+        if is_report:
+            file_location = self.csv_location
 
+        if self.attach_file:
+            self.writetofile(file_location)
+            self.create_attachment(file_location)
 
-def done(server):
-    # Quit the email server when everything is done
-    server.quit()
+        self.send()
 
+    def writetofile(self, file_location):
+        attaching = open(file_location, 'w')
+        # attaching.write(str(self.header))
+        attaching.write(str(self.data))
+        attaching.close()
 
-""" Received from: [ https://nitratine.net/blog/post/how-to-send-an-email-with-python/ ] """
+    # This file wants to be opened in html reader when it is a .txt ... Fix that Andrew
+    def create_attachment(self, file_location):
+        # Create the attachment file (only do it once)
+        filename = os.path.basename(file_location)
+        attachment = open(file_location, "rb")
+        self.part = MIMEBase('application', 'octet-stream')
+        self.part.set_payload(attachment.read())
+        encoders.encode_base64(self.part)
+        self.part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+        attachment.close()
 
-'''
-Most simple Setup:
+    def connect(self):
+        # Connect and login to the email server
+        self.server = smtplib.SMTP('smtp.gmail.com', 587)
+        self.server.starttls()
+        self.server.login(self.email, self.password)
+        return self.server
 
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+    def send(self):
+        """ Loop over each email to send to """
 
-email = 'myaddress@gmail.com'
-password = 'password'
-send_to_email = 'sentoaddreess@gmail.com'
-subject = 'This is the subject' # The subject line
-message = 'This is my message'
+        print(self.name_list)
+        print(self.send_emails_to)
+        counter = 0
+        for send_to_email in self.send_emails_to:  # Lets to this :: for sent_to_email, name in list_of_people:
 
-msg = MIMEMultipart()
-msg['From'] = email
-msg['To'] = send_to_email
-msg['Subject'] = subject
+            print(send_to_email)
+            print(self.subject)
+            print(self.header + '\n' + self.message)
 
- # Attach the message to the MIMEMultipart object
-msg.attach(MIMEText(message, 'plain'))
+            # Setup MIMEMultipart for each email address (if we don't do this, the emails will concat on each email sent)
+            msg = MIMEMultipart()
 
-server = smtplib.SMTP('smtp.gmail.com', 587)
-server.starttls()
-server.login(email, password)
-text = msg.as_string() # You now need to convert the MIMEMultipart object to a string to send
-server.sendmail(email, send_to_email, text)
-server.quit()
+            msg['From'] = str(self.email)
+            msg['To'] = str(send_to_email)
+            msg['Subject'] = str(self.subject)
 
-'''
+            # Attach the message to the MIMEMultipart object
+            msg.attach(MIMEText(self.header + self.name_list[counter] + '\n' + self.message, 'plain'))
 
-'''
-Used for having an Attachment:
+            # Attach the attachment file
+            # TODO attach if it is an email not a text
+            if self.part is not None:
+                msg.attach(self.part)
 
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from email.mime.base import MIMEBase
-from email import encoders
-import os.path
+            # Send the email to this specific email address
+            self.server.sendmail(str(self.email), str(send_to_email), msg.as_string())
+            counter += 1
+            self.done()
 
-email = 'myaddress@gmail.com'
-password = 'password'
-send_to_email = 'sentoaddreess@gmail.com'
-subject = 'This is the subject'
-message = 'This is my message'
-file_location = 'C:\\Users\\You\\Desktop\\attach.txt'
-
-msg = MIMEMultipart()
-msg['From'] = email
-msg['To'] = send_to_email
-msg['Subject'] = subject
-
-msg.attach(MIMEText(message, 'plain'))
-
-# Setup the attachment
-filename = os.path.basename(file_location)
-attachment = open(file_location, "rb")
-part = MIMEBase('application', 'octet-stream')
-part.set_payload(attachment.read())
-encoders.encode_base64(part)
-part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
-
-# Attach the attachment to the MIMEMultipart object
-msg.attach(part)
-
-server = smtplib.SMTP('smtp.gmail.com', 587)
-server.starttls()
-server.login(email, password)
-text = msg.as_string()
-server.sendmail(email, send_to_email, text)
-server.quit()
-'''
+    def done(self):
+        """ Quit the email server when everything is done """
+        self.server.quit()

@@ -1,55 +1,130 @@
 #!/bin/sh
 
-if [ $(source setup_complete.sh) = 'true' ]
+# rpi.gpio
+# right before not importing pandas
+
+desired_python_version="Python 3.7"
+
+SECONDS=0
+
+if [ "$(. is_setup_complete.sh)" = 'true' ]
 then
-  echo "Setup has Already  been run so  we will not do that now"
+  echo "\033[34m  Skipping Setup because its Already Done  \033[0m"
 else
-  python3 wifi_setup.py
+  echo "\033[34m  updating raspberry pi  \033[0m"
 
-  echo "updating raspberry pi"
-  #sudo apt update
-  #sudo apt full-upgrade
+  echo "\033[34m  full-upgrade  \033[0m"
+  echo 'q' | sudo apt -y full-upgrade #1+ hour
+  echo "\033[34m  apt-get update  \033[0m"
+  sudo apt-get update
+  echo "\033[34m  apt-get upgrade  \033[0m"
+#  echo "" |      # It said the desktop might hvae changed press ok
+  sudo apt-get -y upgrade --fix-missing
 
-  path="../../../Documents/EZ_Salt/HC-SR04"
-  if [ -d "$path" ]
+
+  echo "\033[34m  Enableing ssh server  \033[0m"
+  sudo systemctl enable ssh
+
+  echo "\033[34m  starting something??  maybe ssh  \033[0m"
+  sudo systemctl start ssh
+
+# hostname -I # to get IP-Address
+
+# Here I set up a server. So as long as I have the IP address I can access it locally
+  #sudo apt install apache2 -y
+# move to 'pi' user and edit the index.html file
+  #cd /var/www/html
+  #sudo chown pi: index.html
+# In oder for tapache to understand PHP
+  #sudo apt install php libapache2-mod-php -y
+  #sudo leafpad index.php
+  #add this <?php header( 'Location: /index.html' ) ;  ?>
+
+  # Here I set up a non-local server to acces it anywhere
+  #sudo apt update && sudo apt install -y connectd && sudo connectd_installer
+  # echo 1
+  # echo 'ezsalt.dev.env@gmail.com'
+  # echo 'ezsalt98'
+
+
+  if [[ "$( python3 --version )" =~ $desired_python_version ]]
   then
-    echo "Directory $path exists."
-    cd ~/Documents/EZ_Salt/HC-SR04/ || return
-
+    echo "\033[34m  PYTHON Already exists  \033[0m"
   else
-    echo "creating path to repo"
-    mkdir -p ~/Documents/EZ_Salt
-    cd ~/Documents/EZ_Salt/ || return
-
-
-    echo "assigning username and password"
-    git config --global user.name "ezsaltdevenv"
-    git config --global user.password "ezsalt98"
-
-    echo "cloning the git repo from ezsaltdevenv/HC-SR04.git"
-    git clone https://github.com/ezsaltdevenv/HC-SR04.git
-
-    echo "entering git repo"
-    cd ~Documents/EZ_Salt/HC-SR04/ || return
+    echo "\033[34m  upgrading python  \033[0m"
+    sudo apt-get install
+    . python_update.sh
   fi
 
-  echo
-  echo "changing terminal design temporarily"
+  sleep 10
+
+  path="$HOME/Documents/EZ_Salt/HC-SR04"
+  if [ -d "$path" ]
+  then
+    echo "\033[34m  Directory $path exists.  \033[0m"
+    cd "$HOME"/Documents/EZ_Salt/HC-SR04/ || return
+
+  else
+    echo "\033[34m  creating path to repo  \033[0m"
+    mkdir -p "$HOME"/Documents/EZ_Salt
+    cd "$HOME"/Documents/EZ_Salt/ || return
+
+    echo "\033[34m  cloning the git repo from ezsaltdevenv/HC-SR04.git  \033[0m"
+    git clone https://ezsaltdevenv:ezsalt98@github.com/ezsaltdevenv/HC-SR04.git
+
+    echo "\033[34m  entering git repo  \033[0m"
+    cd "$HOME"/Documents/EZ_Salt/HC-SR04/ || return
+  fi
+
+  sleep 10
+
+  # What if I got this data off the Database
+  # TODO make sure this file is run and all is well
+  . create_user_file.sh
+
+  sleep 3
+
+  if ping -q -c 1 -W 1 google.com >/dev/null; then
+    echo "\033[34m  The network is up  \033[0m"
+  else
+    echo "\033[34m  setting up user wifi  \033[0m"
+    python3 wifi_setup.py
+  fi
+
+
+  sleep 20
+
+
+  echo "\033[34m  changing terminal design temporarily  \033[0m"
   #chsh -s /bin/bash
-  #'This has the pi@raspberry tag'
-  #os.system("export PS1='\[\033[32m\]\[\033[m\]@\[\033[32m\] \[\033[33;1m\]\w\[\033[m\] (\$(git branch 2>/dev/null | grep '^*' | colrm 1 2)) $ '")
+  #'This has the pi@raspberry tag'    export PS1='\[\033[32m\]\[\033[m\]@\[\033[32m\] \[\033[33;1m\]\w\[\033[m\] (\$(git branch 2>/dev/null | grep '^*' | colrm 1 2)) $ '
   #'This has the time as the tag'
   export PS1='\[\033[0;32m\]\[\033[0m\033[0;32m\][\@]\[\033[0;33m\]\w\[\033[0;36m\]$(__git_ps1)\n\[\033[0;32m\]\[\033[0m\033[0;32m\]\$\[\033[0m\033[0;32m\]\[\033[0m\] '
 
-  echo
-  echo "installing the nesseccary libraries"
-  pip install RPi.GPIO
-  pip install smtplib
-  echo "not going to instal 'apt-get install python-pandas'"
-  #sudo apt-get install python-pandas
+  echo "\033[34m  installing the nesseccary libraries  \033[0m"
+  echo "\033[34m  sudo apt-get -y install rpi.gpio  \033[0m"
+  sudo apt-get -y install rpi.gpio
+  pip install -y RPi.GPIO
+  echo "\033[34m  pip install smtplib  \033[0m"
+  pip install -y smtplib
+  echo "\033[34m  pip install twilio  \033[0m"
+  pip install -y twilio
+#  brew tap twilio/brew && brew install twilio
 
-  echo "when finished I'll change the -1 to 1"
-  #python3 setup.py
-  source setup_complete.sh
+  sleep 5
+
+  echo "\033[34m  Setting up CronTab  \033[0m"
+  . _crontab.sh
+
+  sleep 2
+
+  echo "\033[34m  when finished I'll change the -1 to 1  \033[0m"
+  . setup_complete.sh
+  
+  sleep 2
 fi
-echo
+
+echo -e "\n\n"
+
+duration=$SECONDS
+echo "\033[34m  Script_setup.sh Ran in $(($duration / 60)) minutes and $(($duration % 60)) seconds.  \033[0m"

@@ -2,9 +2,11 @@ import os
 import sys
 import time
 import traceback
+import logging
 
-import email__ as email
+from email__ import Email
 from HC_SR04_class import HC_SR04
+import web_request
 
 fake_start = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 #             86%    72%    58%      50%    30%      15%       9%      7%      6%      4%
@@ -36,14 +38,19 @@ def find_distance_and_percent(hc_sr04, pulse_end, pulse_start):
 
 
 def main():
-    message = None
+    error = 'The Traceback was not initialized'
+    message = 'The message was not initialized'
 
-    print('\n\n'
-          f'\033[31m\033[43m============================================\033[0m\n'
-          f'\033[31m\033[43m           Running exe_ver_1.0.py           \033[0m\n'
-          f'\033[31m\033[43m         Any Thoughts on the Color?         \033[0m\n'
-          f'\033[31m\033[43m============================================\033[0m\n'
-          f'\n')
+    color1 = '    \033[31m'
+    color2 = '\033[43m'
+    end_color = '\033[0m'
+
+    print(f"""\n\n
+{color1}{color2}============================================{end_color}
+{color1}{color2}           Running exe_ver_1.0.py           {end_color}
+{color1}{color2}         Any Thoughts on the Color?         {end_color}
+{color1}{color2}============================================{end_color}
+""")
 
     print("Distance Measurement in Progress\n")
 
@@ -61,39 +68,54 @@ def main():
             while True:
                 hc_sr04, i = while_loop_content(hc_sr04, i)
 
-    except KeyboardInterrupt:  # If there is a KeyboardInterrupt (when you press ctrl+c), exit the program
+    except KeyboardInterrupt as e:  # If there is a KeyboardInterrupt (when you press ctrl+c), exit the program
+        # error = e #e.with_traceback(*sys.exc_traceback)#.with_traceback()
         message = 'KeyboardInterrupt'  # message = e.traceBack() etc.
+        error = logging.error(message)
 
-    except FileNotFoundError:
+    except FileNotFoundError as e:
+        error = e
         message = 'FileNotFoundError'
 
-    except NameError:
+    except NameError as e:
+        error = e
         message = 'NameError'
 
-    else:
-        email.send_exception_error("The else method has been called???\n"
-                                   "I don't know what happened, I wonder if the "
-                                   "raspberry pi died", "ELSE Problem")
+    # else:
+    #     email.send_exception_error("The else method has been called???\n"
+    #                                "I don't know what happened, I wonder if the "
+    #                                "raspberry pi died", "ELSE Problem")
 
     #    I want to pass the `e` in there like in Java so the email contains the Info
     finally:
         print("\nCleaning up!")
-        if not laptop_testing:  GPIO.cleanup()
+        if not laptop_testing:
+            GPIO.cleanup()
 
-        if message is None:
+        print('error', error)
+
+        if error is 'The error was not initialized':
+            error = "Exception Unknown"
+        if message is 'The message was not initialized':
             message = 'UnKnown Error'
 
-        trace_back = traceback.format_exception(*sys.exc_info())  # .print_exc(file=sys.stdout)
-        formated_exe = ""
-        for i in trace_back:
-            formated_exe = f"{formated_exe}{i}"
-        email.send_exception_error(message, formated_exe)
+        # raise
+        # trace_back = traceback.format_exception(*sys.exc_info())
+        # trace_back = traceback.print_exc(file=sys.stdout)
+        # trace_back = sys
+        # formated_exe = trace_back
+        # print(trace_back)
+        # for i in trace_back:
+        #     formated_exe = f"{formated_exe}{i}"
+        email = Email()
+        email.send_exception_error(error=message, traceback=error)
 
         sys.exit()
 
 
 def while_loop_content(hc_sr04, i):
     pulse_start, pulse_end = 0, 0
+    time.sleep(2)
     if laptop_testing:
         pulse_end = fake_start[i]
         pulse_start = fake_end[i]
@@ -101,7 +123,6 @@ def while_loop_content(hc_sr04, i):
     else:
         GPIO.output(hc_sr04.TRIG, False)
         print("Waiting For Sensor To Settle\n")
-        time.sleep(2)
 
         GPIO.output(hc_sr04.TRIG, True)
         time.sleep(0.0001)
@@ -112,19 +133,41 @@ def while_loop_content(hc_sr04, i):
 
         while GPIO.input(hc_sr04.ECHO) == 1:
             pulse_end = time.time()
+
     distance, percent_left = find_distance_and_percent(hc_sr04, pulse_end, pulse_start)
-    if hc_sr04.send_notification(percent_left):
-        email.send_report(percent_left)
-    print(f"Percent Remaining: {percent_left}%")
-    print(f"Distance: {distance} cm")
+
+    if do_anything(distance, percent_left):
+        """  Deciding if I should send a notification  """
+        if hc_sr04.send_notification(percent_left):
+            email = Email()
+            email.send_report(percent_left)
+
+        web_request.attack_website(distance)
+
+        print(f"Percent Remaining: {percent_left}%")
+        print(f"Distance: {distance} cm")
+        print()
+        # os.system('sleep 3600')
+
     i += 1
     return hc_sr04, i
 
 
+def do_anything(distance, percent_left):
+    if percent_left < 0:
+        return False
+    if percent_left > 100:
+        return False
+
+    # if the array is not len() of 10 or 9
+
+    return True
+
+
 if __name__ == '__main__':
     laptop_testing = False
-    print(os.uname()[1])
-    if str(os.uname()[1]).__contains__('amcmullin'):
+
+    if not str(os.uname()[1]).__contains__('raspberrypi'):
         laptop_testing = True
     if not laptop_testing:
         import RPi.GPIO as GPIO
