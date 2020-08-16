@@ -2,10 +2,10 @@
 
 Originally Created by `mcmullinboy15` and the Repository has been Transfered to `ezsaltdevenv`
 
+This Project has moved to use a D1 Mini, an Arduino capable device to work with the HC-SR04 sensor, and is no longer in use
+
 ## Code Created by me to connect a Raspberry Pi 3 B+ to the HC-SR04 ultrasonic sensor
-    This project is made to email a user of the sensor at 8:00 o'clock everyday if the sensors detects a reading of 15% or less
-    
-## This Project has moved to use a D1 Mini, an Arduino capable device to work with the HC-SR04 sensor, and is no longer in use
+    This project is made to email a user of the sensor at 8:00 o'clock everyday if the sensors detects a reading of 15% or less    
     
 ### Setup and run Sam.sh:
 
