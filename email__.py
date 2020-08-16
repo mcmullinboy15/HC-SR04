@@ -27,7 +27,7 @@ class Email():
     """ Received from: [ https://nitratine.net/blog/post/how-to-send-an-email-with-python/ ] """
 
     def __init__(self):
-        self.email = 'ezsalt.dev.env@gmail.com'
+        self.email = '**********@gmail.com'
         self.password = '********'
         self.attach_file = False
         self.USER_DATA_fn = 'user_data.csv'
