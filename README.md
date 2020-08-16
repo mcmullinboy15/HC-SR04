@@ -39,4 +39,4 @@ This Project has moved to use a D1 Mini, an Arduino capable device to work with 
         - Then runs the file `exe_ver_1.0.py` which runs the sensor loop
         
         
-if sensor does not exist in server database the database will give it a vaild 25 digit id and will use that to identify the Sensor.
+If sensor does not exist in server database the database will give it a vaild 25 digit id and will use that to identify the Sensor.
