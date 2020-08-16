@@ -2,8 +2,12 @@
 
 Originally Created by `mcmullinboy15` and the Repository has been Transfered to `ezsaltdevenv`
 
-
-Setup and run Sam.sh:
+## Code Created by me to connect a Raspberry Pi 3 B+ to the HC-SR04 ultrasonic sensor
+    This project is made to email a user of the sensor at 8:00 o'clock everyday if the sensors detects a reading of 15% or less
+    
+## This Project has moved to use a D1 Mini, an Arduino capable device to work with the HC-SR04 sensor, and is no longer in use
+    
+### Setup and run Sam.sh:
 
     Connecting to the USB:
     
@@ -19,7 +23,7 @@ Setup and run Sam.sh:
     
         * source Sam.sh
         
-Running the Sensor:
+### Running the Sensor:
 
     Sam.sh should have put you in the correct folder of the downloaded code
     
@@ -35,11 +39,4 @@ Running the Sensor:
         - Then runs the file `exe_ver_1.0.py` which runs the sensor loop
         
         
-exists
-    vaild 25 id
-    
-manual idea
-    get email to send as id/create Id
-    
-send grid
-    
+if sensor does not exist in server database the database will give it a vaild 25 digit id and will use that to identify the Sensor.
