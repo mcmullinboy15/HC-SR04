@@ -1,7 +1,5 @@
 # HC-SR04
 
-Originally Created by `mcmullinboy15` and the Repository has been Transfered to `ezsaltdevenv`
-
 This Project has moved to use a D1 Mini, an Arduino capable device to work with the HC-SR04 sensor, and is no longer in use
 
 ## Code Created by me to connect a Raspberry Pi 3 B+ to the HC-SR04 ultrasonic sensor
